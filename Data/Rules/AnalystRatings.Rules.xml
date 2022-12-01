@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfRule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Rule>
+    <Name>Stock is Upgraded</Name>
+    <Description>A moving average of all analyst ratings (upgrades and downgrades) is compared to a the target average rating (normalized numeric value, where 1 = buy and 5 = sell). When it is less than the average rating entered, it has been upgraded. When it is greater than the average rating entered, it has been downgraded. </Description>
+    <Category>Analyst Ratings</Category>
+    <Init>DataSeries &lt;#fidsAverage&gt; = FundamentalDataSeries( "all analyst ratings", &lt;#Number of Ratings&gt;, true, 0); 
+FundamentalDateRules &lt;#fdr&gt; = new FundamentalDateRules(this, Bars, Bars.Symbol, "analyst upgrade");
+int &lt;#fiDays&gt;;
+</Init>
+    <Body>if(( &lt;#fidsAverage&gt;[bar] &gt; 0 )&amp;&amp;( &lt;#fidsAverage&gt;[bar] &lt;= &lt;#Average Rating&gt; )&amp;&amp;( &lt;#fdr&gt;.DaysSinceFundamentalItem( bar, out &lt;#fiDays&gt; ))&amp;&amp;( &lt;#fiDays&gt; == 0 ))
+</Body>
+    <Plotting>ChartPane &lt;#paneZ&gt; = CreatePane(50, true, false); 
+PlotSeries(&lt;#paneZ&gt;, &lt;#fidsAverage&gt;, Color.Purple, LineStyle.Solid, 1); 
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>a905f5ff-06f9-4a82-8590-23d5ff2cb3e5</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Average Rating</Name>
+        <Value>3</Value>
+        <DefaultValue>3</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>5</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Number of Ratings</Name>
+        <Value>10</Value>
+        <DefaultValue>10</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>100</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>fidsAverage</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneZ</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>fdr</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>fiDays</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Stock is Downgraded</Name>
+    <Description>A moving average of all analyst ratings (upgrades and downgrades) is compared to a the target average rating (normalized numeric value, where 1 = buy and 5 = sell). When it is less than the average rating entered, it has been upgraded. When it is greater than the average rating entered, it has been downgraded. </Description>
+    <Category>Analyst Ratings</Category>
+    <Init>DataSeries &lt;#fidsAverage&gt; = FundamentalDataSeries( "all analyst ratings", &lt;#Number of Ratings&gt;, true, 0); 
+FundamentalDateRules &lt;#fdr&gt; = new FundamentalDateRules(this, Bars, Bars.Symbol, "analyst downgrade");
+int &lt;#fiDays&gt;;
+</Init>
+    <Body>if(( &lt;#fidsAverage&gt;[bar] &gt;= &lt;#Average Rating&gt; )&amp;&amp;( &lt;#fdr&gt;.DaysSinceFundamentalItem( bar, out &lt;#fiDays&gt; ))&amp;&amp;( &lt;#fiDays&gt; == 0 ))
+</Body>
+    <Plotting>ChartPane &lt;#paneZ&gt; = CreatePane(50, true, false); 
+PlotSeries(&lt;#paneZ&gt;, &lt;#fidsAverage&gt;, Color.Purple, LineStyle.Solid, 1); 
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>a905f5ff-06f9-4a82-8590-23d5ff2cb3e5</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Average Rating</Name>
+        <Value>3</Value>
+        <DefaultValue>3</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>5</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Number of Ratings</Name>
+        <Value>10</Value>
+        <DefaultValue>10</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>100</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>fidsAverage</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneZ</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>fdr</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>fiDays</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+</ArrayOfRule>

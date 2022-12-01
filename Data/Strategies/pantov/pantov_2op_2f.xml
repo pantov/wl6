@@ -1,0 +1,891 @@
+<?xml version="1.0"?>
+<Strategy xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>pantov_2op_2f</Name>
+  <ID>6699eedb-8bb6-481b-8e86-c03a91ba319e</ID>
+  <Code>using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Drawing;
+using WealthLab;
+using WealthLab.Indicators;
+using System.Text.RegularExpressions;
+using System.Globalization;
+//using System.Management;
+
+namespace WealthLab.Strategies
+{
+	
+ 
+	public class MyStrategy : WealthScript
+	{
+
+		private static readonly Regex _optionNameRegex = new Regex(@"(?&lt;code&gt;\w+-[0-9]{1,2}\.[0-9]{1,2})(?&lt;isMargin&gt;[M_])(?&lt;expiryDate&gt;[0-9]{6,6})(?&lt;optionType&gt;[CP])(?&lt;region&gt;\w)\s?(?&lt;strike&gt;\d*\.*\d*)", RegexOptions.Compiled);
+		private static readonly Regex _futureNameRegex = new Regex(@"(?&lt;code&gt;[A-Z,a-z]+)-(?&lt;expiryMonth&gt;[0-9]{1,2})\.(?&lt;expiryYear&gt;[0-9]{1,2})", RegexOptions.Compiled);
+		
+		public Bars FRIV; 
+		public List&lt;sec&gt; Secs  = new List&lt;sec&gt;();
+		public sec opt;
+		public spred spredRI,spredSi;
+		public double vremri,vremsi,bazari,bazasi,bazamm,C10,P10,C20,P20,RIpnl,Sipnl,MMpnl;
+		public string[] MonCall = {"_","A","B","C","D","E","F","G","H","I","J","K","L"};		
+		public string[] MonPut = {"_","M","N","O","P","Q","R","S","T","U","V","W","X"};		
+		public string[] MonF = { "_","F","G","H","J","K","M","N","O","U","V","X","Z" };
+		public string Step= "init";
+		public class sec 
+		{
+			private MyStrategy _a;
+			public class par 
+			{
+				//	public double _usdpips;
+				//	public double _iv;
+				public double _median;
+				public double _basemedian;
+				//    public DateTime _ExpiryDate;
+			}
+			static public   int num_bar;
+			private par[] P;
+			public double median
+				{get { return P[num_bar]._median; }}
+			public double medianR
+				{get { return median * kusd; }}
+			public double vol_medianR
+				{get { return vol_median * kusd; }}
+
+
+			public double basemedian
+			{
+				get { return P[num_bar]._basemedian; }
+				//	set { P[num_bar]._basemedian = value; }
+			}
+			public double basemedianR
+				{get { return basemedian * kusd; }}
+			public double vnutrR
+				{get { return vnutr * kusd; }}
+			public double vremR
+				{get { return vrem * kusd; }}
+			public double rpnlR
+				{get { return rpnl * kusd; }}
+			public double upnlR
+				{get { return upnl * kusd; }}
+
+			//	public double usdpips
+			//	{
+			//		get { return P[num_bar]._usdpips; }
+			//		set { P[num_bar]._usdpips = value; }
+			//	}
+
+			public double T  // Время до экспирации (сколько лет осталось)
+			{
+				get { 
+					TimeSpan times = ExpiryDate - BaseBars.Date[num_bar];
+					return  times.TotalDays / day_year;
+				}
+			}
+			public string secname;
+			public string SecurityName;
+			public string BaseName;
+			public double Strike;
+			public string OptionType;
+			public DateTime ExpiryDate;
+			public string code;
+			public Bars BaseBars;
+			public Bars bars;
+			static public Bars UsdBars;
+			public int day_year = 365;
+			public double riskfree = 0;
+			public double  dividend = 0;
+			static public DataSeries usdpips;
+			public double kusd = 1;
+			public double tp; 
+			public double iv; 
+			public double vnutr; 
+			public double vrem;
+			public double StepStrike;
+			public double CentralStrike;
+
+			static public double volcalcR;
+			
+			public double pos; 
+			public double rpnl; 
+			public double upnl
+				{get { return (median - vol_median) * pos; }}
+			public double k
+				{get { return Math.Abs((volcalcR / basemedianR)/ Delta );  }}
+
+			public double volpos
+				{get { return Math.Abs(basemedianR * Delta * pos);  }}
+
+			public double volpos1
+				{get { return Math.Abs(basemedianR * Delta);  }}
+			
+			public double vol_all;
+			public double vol_median;
+	
+			private readonly static double dayInYear = 365;              //Количество дней в году (расчет временного распада)
+			private readonly static double timeDif = 1.0 / dayInYear;    //Коэффициент дней в году
+			private readonly static double vegaDif = 0.01;               //Коэффициент веги
+			private readonly static double gammaDif = 0.1;               //Коэффициент Гаммы
+			public double Delta;
+			public double Gamma;
+			public double Theta;
+			public double Vega;
+			public double Rho;
+			
+	
+			public string[] Mon = { "_","F","G","H","J","K","M","N","O","U","V","X","Z" };
+			// 1,  'AM' 2,  'BN' 3,  'CO' 4,  'DP' 5,  'EQ' 6,  'FR' 7,  'GS' 8,  'HT' 9,  'IU' 10, 'JV' 11, 'KW' 12, 'LX'
+			/// &lt;summary&gt;
+			/// Расчет временного распада для текущего момента времени у опциона Call
+			/// &lt;/summary&gt;
+			/// &lt;param name="baseActive"&gt;Значение базового актива&lt;/param&gt;					basemedian
+			/// &lt;param name="strike"&gt;Страйк опциона&lt;/param&gt;									Strike
+			/// &lt;param name="timeToExp"&gt;Время до экспирации (сколько лет осталось)&lt;/param&gt;	T
+			/// &lt;param name="riskFree"&gt;Безрисковай процентная ставка&lt;/param&gt;				riskfree
+			/// &lt;param name="deviation"&gt;Стандартное отклонение&lt;/param&gt;						ivbar
+			/// &lt;param name="dividend"&gt;Размер дивиденда по акциям&lt;/param&gt;
+			/// &lt;returns&gt;Временной распад опциона Call&lt;/returns&gt;
+			public void SetBar(int b)
+			{
+				sec.num_bar = b;
+				if (secname.Substring(0,2)=="RI" ) { kusd = sec.UsdBars.Open[b]/50; StepStrike = 2500; }
+				if (secname.Substring(0,2)=="Si" ) { kusd = 1; StepStrike = 500; }
+				if (secname.Substring(0,2)=="MM" ) { kusd = 10; StepStrike = 1000; }
+
+				if (this.secname.Length&gt;4)  // for options
+				{
+				//	sec.num_bar = b;
+					this.iv = get_iv(median);
+					double ivbar = this.iv / 100;
+					double d1 = 0.0;
+					double d2 = 0.0;
+					double dBlackScholes = 0.0;
+					d1 = (Math.Log(basemedian / Strike) + (riskfree + ivbar * ivbar / 2.0) * T) / (ivbar * Math.Sqrt(T));
+					d2 = d1 - ivbar * Math.Sqrt(T);
+				
+					double nd11 = Math.Exp(-d1 * d1 / 2.0) / Math.Sqrt(2 * Math.PI);
+					double expRate = Math.Exp(-riskfree * T);
+				
+					if (OptionType == "Call")
+					{				
+						this.tp = basemedian * CND(d1) - Strike * Math.Exp(-riskfree * T) * CND(d2);
+						this.vnutr = (basemedian - Strike) &gt; 0 ? basemedian - Strike : 0;
+						this.Delta = CND(d1);
+						this.Theta =  timeDif * (basemedian * ivbar * nd11 / (2 * Math.Sqrt(T)) + Strike * riskfree * expRate * CND(d2));
+					}
+					else if (OptionType == "Put") 
+					{
+						this.tp = Strike * Math.Exp(-riskfree * T) * CND(-d2) - basemedian * CND(-d1);
+						this.vnutr = (-basemedian + Strike) &gt; 0 ? -basemedian + Strike : 0;
+						this.Delta = CND(d1) - 1;
+						this.Theta =  (timeDif * (basemedian * ivbar * nd11 / (2 * Math.Sqrt(T)) + Strike * riskfree * expRate * CND(d2)))- timeDif * Strike * riskfree * expRate;
+					}
+					this.vrem = median - this.vnutr;
+					this.Vega =  vegaDif * basemedian * nd11 * Math.Sqrt(T);
+					this.Gamma = gammaDif * nd11 / (basemedian * ivbar * Math.Sqrt(T));
+				} else
+				{
+					this.Delta = 1;
+					this.Theta = 0;
+					var dop = ((basemedian % StepStrike) &gt; (StepStrike/2)) ? 1:0;	
+					CentralStrike = (int)(basemedian/StepStrike+dop) * StepStrike;
+
+				}
+			}
+			
+			public void Sdelka(double kol)
+			{
+				pos = pos + kol;
+				vol_all = vol_all + kol * median;
+				vol_median = Math.Abs(vol_all / pos);
+				_a.PrintDebug( secname + (kol&gt;0?" Bay ":" Sell ")+pos +"("+median+") DeltaAll: "+ Delta*pos+" Vrem: "+ vremR*-pos);
+				//self:UPnl_calc()
+			}
+
+			public double Premium(double v)
+			{
+				double d1 = 0.0;
+				double d2 = 0.0;
+				double dBlackScholes = 0.0;
+				d1 = (Math.Log(basemedian / Strike) + (riskfree + v * v / 2.0) * T) / (v * Math.Sqrt(T));
+				d2 = d1 - v * Math.Sqrt(T);
+				if (OptionType == "Call")
+				{				
+					dBlackScholes = basemedian * CND(d1) - Strike * Math.Exp(-riskfree * T) * CND(d2);
+				}
+				else if (OptionType == "Put") 
+				{
+					dBlackScholes = Strike * Math.Exp(-riskfree * T) * CND(-d2) - basemedian * CND(-d1);				
+				}
+				return dBlackScholes;
+			}
+			static public double CND(double X)
+			{
+				double L = 0.0;
+				double K = 0.0;
+				double dCND = 0.0;
+				const double a1 = 0.31938153; 
+				const double a2 = -0.356563782; 
+				const double a3 = 1.781477937;
+				const double a4 = -1.821255978;
+				const double a5 = 1.330274429;
+				L = Math.Abs(X);
+				K = 1.0 / (1.0 + 0.2316419 * L);
+				dCND = 1.0 - 1.0 / Math.Sqrt(2 * Convert.ToDouble(Math.PI.ToString())) * 
+					Math.Exp(-L * L / 2.0) * (a1 * K + a2 * K  * K + a3 * Math.Pow(K, 3.0) + 
+					a4 * Math.Pow(K, 4.0) + a5 * Math.Pow(K, 5.0));
+			
+				if (X &lt; 0) 
+				{
+					return 1.0 - dCND;
+				}
+				else
+				{
+					return dCND;
+				}
+			}
+			public double get_iv(double tp)
+			{
+				double min = 0.00001;
+				var deviation = min;
+				double high = 2;
+				double low = 0;
+				while ((high - low) &gt; min)
+				{
+					deviation = (high + low) / 2;
+
+					var prem = Premium(deviation);
+					if ( prem &gt; tp)
+					{
+						high = deviation;
+					}
+					else
+						low = deviation;
+				}
+				return ((high + low) / 2) * 100;
+			}
+
+			public sec(string name, MyStrategy a)
+			{
+				this._a=a;
+				this.secname = name;
+				this.bars = _a.GetExternalSymbol(this.secname, true);
+				this.SecurityName = this.bars.SecurityName;
+				if (this.secname.Length &gt; 4)
+				{
+					var matches = _optionNameRegex.Matches(this.SecurityName);
+					var groups = matches[0].Groups;
+					if (groups.Count == 7)
+					{
+						this.code = groups["code"].Value;
+						this.ExpiryDate = Convert.ToDateTime(DateTime.ParseExact(groups["expiryDate"].Value+"1900", "ddMMyyHHmm", CultureInfo.InvariantCulture));
+						this.OptionType = groups["optionType"].Value == "C" ? "Call" : "Put";
+						this.Strike = double.Parse(groups["strike"].Value, CultureInfo.InvariantCulture);
+					}
+					var matchesf = _futureNameRegex.Matches(this.code);
+					var groupsf = matchesf[0].Groups;
+					this.BaseName = this.secname.Substring(0,2)+Mon[int.Parse(groupsf["expiryMonth"].Value)]+groupsf["expiryYear"].Value.Substring(1,1);
+					this.BaseBars = _a.GetExternalSymbol(this.BaseName, true);;
+				} else
+				{
+					this.BaseBars = bars; 
+				}
+			
+				par[] Tpar = new par[this.bars.Count];
+				
+				for (int b = 0; b &lt; this.bars.Count; b++)
+				{
+					Tpar[b] = new par();
+					Tpar[b]._median = bars.Open[b];
+					Tpar[b]._basemedian = BaseBars.Open[b];
+				}
+				this.P = Tpar;
+				
+			}
+		}
+
+		public class spred
+		{
+			public double top;
+			public double botton;
+			public spred(sec o1,sec o2) // o1 buy, 02 sell
+			{
+				if (o1.Strike &lt; o2.Strike)
+				{
+				
+					botton = (o2.median - o1.median) * Math.Abs(o1.pos);
+					top =(o2.Strike - o1.Strike - o1.median + o2.median )* Math.Abs(o1.pos);
+				}
+					
+			}
+		}
+		public class paint 
+		{
+			private MyStrategy _a;
+			public DataSeries data;
+			public ChartPane pan;
+			public paint(MyStrategy a)
+			{
+				_a = a;
+			}
+			public void pain()
+			{
+				_a.PlotSeries(pan, data, Color.Green, LineStyle.Solid,1," ");
+			}
+		}
+		
+		public sec Create_sec(string name) 
+		{
+			opt = new sec(name,this);
+			Secs.Add(opt);
+			
+			if (1==1) {
+				PrintDebug("Sec: "+ name+ " Bars count: "+ opt.bars.Count);
+				PrintDebug(opt.SecurityName);
+				PrintDebug(opt.OptionType);
+				PrintDebug(opt.Strike);
+				PrintDebug(opt.ExpiryDate);
+				PrintDebug(opt.code);
+				PrintDebug(opt.BaseName);
+				PrintDebug("_______________________________________________________");}
+			return opt;
+		}
+		#region Black-Scholes in C#	
+		//	opt.TRprice[b] = Premium(opt.OptionType, opt.Base.Open[b],opt.Strike,	time.Days/365, 0, FRIV.Open[b]/100);
+		
+		public double Premium(string CallPutFlag, double S, double X, double T, double r, double v)
+		{
+			double d1 = 0.0;
+			double d2 = 0.0;
+			double dBlackScholes = 0.0;
+			//	local d1=(math.log(self.base_median/self.strike)+vol*vol*0.5*pdaystomate)/(vol*math.sqrt(pdaystomate))
+			//	local d2=d1-vol*math.sqrt(pdaystomate)
+
+			d1 = ((Math.Log(S / X) + ( v * v *0.5) * T)) / (v * Math.Sqrt(T));
+			//	d1 = (Math.Log(S / X) + (r + v * v / 2.0) * T) / (v * Math.Sqrt(T));
+			d2 = d1 - v * Math.Sqrt(T);
+		
+			if (CallPutFlag == "Call")
+			{				
+				// 			pr  = self.base_median * normalDistr(d1) - self.strike * math.exp(-risk_free * pdaystomate) * normalDistr(d2)
+
+				dBlackScholes = S * CND(d1) - X * Math.Exp(-r * T) * CND(d2);
+				
+				//	PrintDebug(T.ToString());
+			}
+			else if (CallPutFlag == "Put") 
+			{
+				dBlackScholes = X * Math.Exp(-r * T) * CND(-d2) - S * CND(-d1);				
+			}
+			return dBlackScholes;
+		}
+		public double CND(double X)
+		{
+			double L = 0.0;
+			double K = 0.0;
+			double dCND = 0.0;
+			const double a1 = 0.31938153; 
+			const double a2 = -0.356563782; 
+			const double a3 = 1.781477937;
+			const double a4 = -1.821255978;
+			const double a5 = 1.330274429;
+			L = Math.Abs(X);
+			K = 1.0 / (1.0 + 0.2316419 * L);
+			dCND = 1.0 - 1.0 / Math.Sqrt(2 * Convert.ToDouble(Math.PI.ToString())) * 
+				Math.Exp(-L * L / 2.0) * (a1 * K + a2 * K  * K + a3 * Math.Pow(K, 3.0) + 
+				a4 * Math.Pow(K, 4.0) + a5 * Math.Pow(K, 5.0));
+			
+			if (X &lt; 0) 
+			{
+				return 1.0 - dCND;
+			}
+			else
+			{
+				return dCND;
+			}
+		}
+		
+		public double IV(string CallPutFlag, double S, double X, double T, double r, double tp)
+		{
+			double min = 0.00001;
+			var deviation = min;
+			//Если Премия оказывается меньше чем премия с нулевой волатильностью, то выходим
+			//if (premium &lt;= getPremium(deviation))
+			//	return null;
+			double high = 2;
+			double low = 0;
+			//PrintDebug("_______________________________________________________");
+			while ((high - low) &gt; min)
+			{
+				deviation = (high + low) / 2;
+
+				var prem = Premium(CallPutFlag,S,X,T,r,deviation);
+				//	PrintDebug("iv: "+deviation + " Prem: "+prem + " price: "+ tp);
+				if ( prem &gt; tp)
+				{
+					high = deviation;
+				}
+				else
+					low = deviation;
+			}
+			return ((high + low) / 2) * 100;
+		}
+
+		#endregion
+		
+		protected override void Execute()
+		{
+			ClearDebug();
+			HideVolume();
+			#region Панели и Dataseries
+			ChartPane Panel4 = CreatePane(100, true, true); DrawLabel(Panel4, "Панель №4", Color.Black);
+			ChartPane Panel3 = CreatePane(100, true, true); DrawLabel(Panel3, "Панель №3", Color.Black);
+			ChartPane Panel2 = CreatePane(100, true, true); DrawLabel(Panel2, "Панель №2", Color.Black);
+			ChartPane Panel1 = CreatePane(100, true, true); DrawLabel(Panel1, "Панель №1", Color.Black);
+			
+			DataSeries Red1 = Close - Close;
+			DataSeries Green1 = Close - Close;
+			DataSeries Blue1 = Close - Close;
+			DataSeries Black1 = Close - Close;
+			DataSeries Red2 = Close - Close;
+			DataSeries Green2 = Close - Close;
+			DataSeries Blue2 = Close - Close;
+			DataSeries Black2 = Close - Close;
+			DataSeries Red3 = Close - Close;
+			DataSeries Green3 = Close - Close;
+			DataSeries Blue3 = Close - Close;
+			DataSeries Black3 = Close - Close;
+			DataSeries Red4 = Close - Close;
+			DataSeries Green4 = Close - Close;
+			DataSeries Blue4 = Close - Close;
+			DataSeries Black4 = Close - Close;
+			
+			DataSeries Red1b = Close - Close;
+			DataSeries Green1b = Close - Close;
+			DataSeries Blue1b = Close - Close;
+			DataSeries Black1b = Close - Close;
+			DataSeries Red2b = Close - Close;
+			DataSeries Green2b = Close - Close;
+			DataSeries Blue2b = Close - Close;
+			DataSeries Black2b = Close - Close;
+			DataSeries Red3b = Close - Close;
+			DataSeries Green3b = Close - Close;
+			DataSeries Blue3b = Close - Close;
+			DataSeries Black3b = Close - Close;
+			DataSeries Red4b = Close - Close;
+			DataSeries Green4b = Close - Close;
+			DataSeries Blue4b = Close - Close;
+			DataSeries Black4b = Close - Close;
+			
+		
+			#endregion
+		
+
+			
+			sec.UsdBars = GetExternalSymbol("usd", true); //получаем бары usd
+
+			
+		
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////			
+			
+			//PrintDebug("Номер первого внутридневного бара для даты 16 февраля 2012 года равен" + Bars.ConvertDateToBar(dt, false));
+			
+			int ExpMonOpt = 3; //Месяц опциона
+			int ExpMonFut = (ExpMonOpt % 3 ==0)?ExpMonOpt:(ExpMonOpt - ExpMonOpt % 3)+3;
+			
+			var days = "22";
+			var mons = "02";
+			var yers = "18";
+			var chmin = "1110";
+			
+			var	FRI = Create_sec("RI"+MonF[ExpMonFut]+yers.Substring(1));
+			var	FSi = Create_sec("Si"+MonF[ExpMonFut]+yers.Substring(1));
+			var	FMM = Create_sec("MM"+MonF[ExpMonFut]+yers.Substring(1));
+			var C1 = FRI;
+			var P1 = FRI;
+			var C11 = FRI;
+			var P11 = FRI;
+			var C2 = FSi;
+			var P2 = FSi;
+			var C22 = FSi;
+			var P22 = FSi;
+
+			
+		//	PrintDebug("MonCall "+MonCall[ExpMonOpt]);
+		//	PrintDebug("MonFut "+MonF[ExpMonFut]);
+			
+			var startdate = Convert.ToDateTime(DateTime.ParseExact(days+mons+yers+chmin, "ddMMyyHHmm",CultureInfo.InvariantCulture));
+			var startdate2 = Convert.ToDateTime(DateTime.ParseExact("2905181310", "ddMMyyHHmm",CultureInfo.InvariantCulture));
+			//	var startdate = Convert.ToDateTime(DateTime.ParseExact("0310171100", "ddMMyyHHmm",CultureInfo.InvariantCulture));
+			double startlevel = 0;
+			
+			PrintDebug("Startdate "+startdate);
+			
+
+
+			for (int b = 0; b &lt; Bars.Count; b++)
+			{
+				if (startdate==Date[b])
+				{
+					foreach (sec s in Secs)
+					{s.SetBar(b);}
+					
+					P1 =  Create_sec("RI"+(FRI.CentralStrike-FRI.StepStrike*3).ToString()+"B"+MonPut[ExpMonOpt]+yers.Substring(1));
+					C1 =  Create_sec("RI"+(FRI.CentralStrike+FRI.StepStrike*4).ToString()+"B"+MonCall[ExpMonOpt]+yers.Substring(1));
+
+					P11 =  Create_sec("RI"+(FRI.CentralStrike-FRI.StepStrike*5).ToString()+"B"+MonPut[ExpMonOpt]+yers.Substring(1));
+					C11 =  Create_sec("RI"+(FRI.CentralStrike+FRI.StepStrike*5).ToString()+"B"+MonCall[ExpMonOpt]+yers.Substring(1));
+					
+					P2 =  Create_sec("Si"+(FSi.CentralStrike-FSi.StepStrike*4).ToString()+"B"+MonPut[ExpMonOpt]+yers.Substring(1));
+					C2 =  Create_sec("Si"+(FSi.CentralStrike+FSi.StepStrike*4).ToString()+"B"+MonCall[ExpMonOpt]+yers.Substring(1));
+
+					P22 =  Create_sec("Si"+(FSi.CentralStrike-FSi.StepStrike*5).ToString()+"B"+MonPut[ExpMonOpt]+yers.Substring(1));
+					C22 =  Create_sec("Si"+(FSi.CentralStrike+FSi.StepStrike*5).ToString()+"B"+MonCall[ExpMonOpt]+yers.Substring(1));
+					
+				}
+			}
+			for (int b = 0; b &lt; Bars.Count; b++)
+			{
+			//	sec.volcalcR = FRI.medianR;
+				foreach (sec s in Secs)
+				{
+					s.SetBar(b);
+				
+				}
+	
+				//	PrintDebug("date "+sec.num_bar);
+			//	if (FRI.ExpiryDate &gt; Date[b])
+				if (1==1)
+				{
+
+					if (startdate==Date[b] &amp; startlevel==0)
+					{
+						Panel1.SetBackgroundColor( b, Color.Red );
+						Panel2.SetBackgroundColor( b, Color.Red );
+						Panel3.SetBackgroundColor( b, Color.Red );
+						Panel4.SetBackgroundColor( b, Color.Red );
+						
+				
+						sec.volcalcR = 1*FRI.medianR;
+						PrintDebug("volcalcR "+sec.volcalcR);
+						FRI.Sdelka(FRI.k*1);
+						FSi.Sdelka(FSi.k*1);
+						FMM.Sdelka(FMM.k*1);
+						bazari = FRI.median;
+						bazasi = FSi.median;
+						bazamm = FMM.median;
+						C10=C1.median;
+						P10=P1.median;
+						C20=C2.median;
+						P20=P2.median;
+
+						
+
+
+						//	ORI1.Sdelka(FRI.k);
+						//	ORI2.Sdelka(-FRI.k);
+				
+						//	OSi1.Sdelka(FSi.k);
+						//	OSi2.Sdelka(-FSi.k);
+						
+					//	P1.Sdelka(1);
+					//	P11.Sdelka(-1);
+					//	C2.Sdelka(-3);
+					//	C22.Sdelka(3);
+
+						
+						C1.Sdelka(-1);
+						C11.Sdelka(1);
+						
+				
+						P2.Sdelka(3);
+						P22.Sdelka(-3);
+
+						
+					//	P2.Sdelka(-3);
+					//	C2.Sdelka(3);
+						
+						vremri = (P1.vremR*-P1.pos + C1.vremR*-C1.pos); 
+						vremsi = (P2.vremR*-P2.pos + C2.vremR*-C2.pos); 
+
+					//	PrintDebug("RI: " + vremri);
+					//	PrintDebug("SI: " + vremsi);
+					//	PrintDebug(" 1 RI:" + C1.vremR*-C1.pos + " SI:" + C11.vremR*-C11.pos);
+					//	PrintDebug(" 2 RI:" + P1.vremR*-P1.pos + " SI:" + C2.vremR*-C2.pos);
+						PrintDebug( "C1 +C11=============================");
+						PrintDebug( C1.vremR*-C1.pos + C11.vremR*-C11.pos);
+						PrintDebug( "P2 +P22=============================");
+						PrintDebug( P2.vremR*-P2.pos + P22.vremR*-P22.pos);
+						
+					//	PrintDebug( "C2 +C22=============================");
+					//	PrintDebug( C2.vremR*-C2.pos + C22.vremR*-C22.pos);
+					//	PrintDebug( "P1 +P11=============================");
+					//	PrintDebug( P1.vremR*-P1.pos + P11.vremR*-P11.pos);
+
+
+					//	PrintDebug("SI: " + P2.vremR*-P2.pos + C2.vremR*-C2.pos);
+
+					//	PrintDebug(C1.vremR*-C1.pos + C2.vremR*-C2.pos);
+					//	PrintDebug("ALL: " + P1.vremR*-P1.pos + C2.vremR*-C2.pos + P2.vremR*-P2.pos + C1.vremR*-C1.pos);
+						
+					//	sec.volcalcR = FRI.medianR*(P1.Delta*P1.pos + C1.Delta*C1.pos);
+					//	FMM.Sdelka(-FMM.k);
+						
+						//	spredRI = new spred(ORI1,ORI2);
+						//	spredSi = new spred(OSi1,OSi2);
+						
+						//	topRI = spredRI.top;
+						//	bottonRI = spredRI.botton;
+						
+						//	topSi = spredSi.top;
+						//	bottonSi = spredSi.botton;
+						
+						//	PrintDebug("top " + top);
+						//	PrintDebug("botton " + botton);
+
+						
+						//	startlevel = (ORI1.medianR) * ORI1.pos +  ORI2.medianR * ORI2.pos + (OSi1.medianR) * OSi1.pos + OSi2.medianR * OSi2.pos + FMM.medianR * FMM.pos;
+						startlevel=1;
+					}
+					if (C1.ExpiryDate &lt; Date[b])
+						Panel4.SetBackgroundColor( b, Color.FromArgb(30,Color.Blue) );
+
+					if ( startlevel==1)
+					{
+
+						if (startdate2==Date[b])
+						{
+					    //	P1.Sdelka(-C1.pos);
+						//	C2.Sdelka(-P2.pos);
+						//	FMM.Sdelka(FMM.pos);
+						}
+
+						//	Red1[b]=FRI.median;
+						//	PrintDebug(FRI.upnlR);
+						//	Red1[b]=ORI1.vrem * -1*ORI1.pos + ORI2.vrem * -1*ORI2.pos;
+						//	Green1[b]=OSi1.vrem * -1*OSi1.pos + OSi2.vrem * -1*OSi2.pos ;
+					
+						//	Red1[b]=FRi.CentralStrike;
+						Green1[b]=FSi.upnlR;
+						Red1[b] = FRI.upnlR;
+						Blue1[b]=1;
+						
+					//	Green2[b]=FSi.median;;
+					//	Red2[b] = FSi.median;
+					//	Blue2[b]=bazasi;
+					
+						//	Green2[b]=C2.Strike;
+						//	Green2b[b] = FSi.median;
+						//	Blue2[b]=P2.Strike;
+						//	Blue2[b] = FRI.medianR/FSi.medianR;
+
+						//	PrintDebug("ORI1.Strike "+ORI1.Strike);
+					
+						//	Red3[b] = vremri;
+						//	Green3[b] = vremsi;
+						//	Blue3b[b] = vremri + vremsi;
+
+					
+						//	var baza = FMM.volpos;
+						//	Red3b[b] = (baza-ORI1.volpos)/ORI1.volpos1;
+						//	Red3[b] = (baza-ORI2.volpos)/ORI2.volpos1;
+						//	Green3b[b] = (baza-OSi1.volpos)/OSi1.volpos1;
+						//	Green3[b] = (baza-OSi2.volpos)/OSi2.volpos1;
+
+					
+						//	Red3b[b] = sec.volcalcR-ORI1.volpos;
+						//	Red3[b] = sec.volcalcR-ORI2.volpos;
+						//	Green3b[b] = sec.volcalcR-OSi1.volpos;
+						//	Green3[b] = sec.volcalcR-OSi2.volpos;
+					
+						//Red2[b] = ORI1.Delta;
+						//	Black1[b] = FRI.medianR;
+					
+						//	Green2b[b] = FSi.median;
+					
+						//	Green3b[b] = FSi.upnlR;
+						//	Green2[b] = -ORI3.Delta;
+						//	Black2[b] = OSi12.medianR;
+					
+						//	Red3b[b] = ORI1.Delta;
+						//	Red3[b] = ORI2.Delta;
+						//	Green3b[b] = OSi1.Delta;
+						//	Green3[b] = OSi2.Delta;
+						//	Red3[b] = ORI1.iv;
+						//	Green3[b] = OSi1.iv*FSi.k;
+
+						//	var P1=ORI1.upnlR + ORI2.upnlR + FRI.upnlR;// + FMM.upnlR;
+						//	var P2=OSi1.upnlR + OSi2.upnlR + FSi.upnlR;// + FMM.upnlR;
+						//	Red2[b] = FRI.upnlR;
+						//	Green3[b] = FRI.upnlR + FSi.upnlR + FMM.upnlR;
+
+						//	var PSi = ORI1.upnlR+ORI2.upnlR + OSi1.upnlR+OSi2.upnlR;
+					
+						//	Red3[b] = -((P1.vremR-C1.vremR)* FRI.k -vremri) ;
+						//	Red3b[b] = - ((-P2.vremR+C2.vremR)* FRI.k- vremsi);
+						//	Green3[b]= C1.upnlR + P1.upnlR; ;
+					//	Red3b[b]= -(C1.upnlR + P1.upnlR) ;
+					//	Green3[b] = C2.upnlR + P2.upnlR;
+					//	Blue3[b] = 1;
+						
+					//	Red3[b] = P1.vremR*-P1.pos;
+					//	Green3[b] = C2.vremR*-C2.pos;
+						//	Black3[b] = P1.vremR*-P1.pos + C2.vremR*-C2.pos ;
+						//	Blue3[b] =1;
+						
+					//	Black3[b] = C1.upnlR + P1.upnlR;
+					//	Red3[b] = FRI.upnlR;
+					//	Green3[b] = FSi.upnlR;
+					//	Green3b[b] = P1.upnlR  + C2.upnlR ;
+						//	Red3[b] = FRI.upnlR ; 
+					//	Blue3[b] =FMM.upnlR;
+					//	Black3[b] =  FRI.upnlR + FSi.upnlR - 2* FMM.upnlR;
+					//	Black3[b] = FMM.median* FSi.median/1000;
+					//	Red3[b] = FRI.median;
+					//	Red3[b] = C1.iv;
+					//	Green3[b] =P2.iv*FSi.k;
+						Red2[b] = C1.upnlR;
+						Green2[b] =P22.upnlR;
+						Red2b[b] = C11.upnlR;
+						Green2b[b] =P2.upnlR;
+						Blue2[b] = 1;
+
+						Red3[b] = C1.upnlR +  P22.upnlR ;
+						Green3b[b] = C11.upnlR + P2.upnlR;
+
+						
+					//	Black3[b] = C2.upnlR + P1.upnlR + FMM.upnlR;
+					//	Blue3[b] = 1;
+						
+					//	RIpnl = ((C10 - P1.median)+C1.Strike - bazari)*C1.kusd;
+					//	Sipnl = (C2.median - P20)+C2.Strike - bazasi;
+					//	MMpnl =  (FMM.median - bazamm)/2 + bazamm;
+
+					//	Blue4[b] = -FMM.upnlR ;
+						Red4[b] = C1.upnlR + C11.upnlR;
+					//	Red4b[b] = FRI.upnlR + 2*C1.upnlR;
+						Green4[b] =P2.upnlR + P22.upnlR;
+					//	Green4b[b] =-(P2.vremR*-P2.pos + P22.vremR*-P22.pos);
+					//	Black4[b] = C1.upnlR + P2.upnlR;
+					//	Black4b[b] = P1.upnlR + C2.upnlR;
+						Black4[b] = C1.upnlR + C11.upnlR + P2.upnlR + P22.upnlR;
+					//	Black4b[b] = C2.upnlR + C22.upnlR + P1.upnlR + P11.upnlR;
+						//	Black4b[b] = RIpnl;
+					//	Black4b[b] = -(C1.vremR*-C1.pos + C11.vremR*-C11.pos + P2.vremR*-P2.pos + P22.vremR*-P22.pos);
+					//	Blue4[b] = FMM.upnlR;
+						
+						//	Black4b[b] = P1.upnlR + C2.upnlR;
+					//	Black4b[b] = C1.upnlR + P1.upnlR + C2.upnlR + P2.upnlR + FMM.upnlR;
+
+						Blue4b[b] = 1;
+					
+						//Blue4.Description = "1";
+						//	Blue1.Description = "1";
+						//Blue1.Description = "1";
+						//Blue2.Description = "1";
+						//Blue3.Description = "1";
+					}
+
+					}
+			}
+			
+			
+			#region Отрисовка Dataseries
+			
+			PlotS(Panel1, Red1, Color.Red,1);
+			PlotS(Panel1, Blue1,Color.Blue,1);
+			PlotS(Panel1, Green1,Color.Green,1);
+			PlotS(Panel1, Black1,Color.Black,1);
+			PlotS(Panel2, Red2, Color.Red,1);
+			PlotS(Panel2, Blue2,Color.Blue,1);
+			PlotS(Panel2, Green2,Color.Green,1);
+			PlotS(Panel2, Black2,Color.Black,1);
+			PlotS(Panel3, Red3, Color.Red,1);
+			PlotS(Panel3, Blue3,Color.Blue,1);
+			PlotS(Panel3, Green3,Color.Green,1);
+			PlotS(Panel3, Black3,Color.Black,1);
+			PlotS(Panel4, Red4, Color.Red,1);
+			PlotS(Panel4, Blue4,Color.Blue,1);
+			PlotS(Panel4, Green4,Color.Green,1);
+			PlotS(Panel4, Black4,Color.Black,1);
+			
+			PlotS(Panel1, Red1b, Color.Red,2);
+			PlotS(Panel1, Blue1b,Color.Blue,2);
+			PlotS(Panel1, Green1b,Color.Green,2);
+			PlotS(Panel1, Black1b,Color.Black,2);
+			PlotS(Panel2, Red2b, Color.Red,2);
+			PlotS(Panel2, Blue2b,Color.Blue,2);
+			PlotS(Panel2, Green2b,Color.Green,2);
+			PlotS(Panel2, Black2b,Color.Black,2);
+			PlotS(Panel3, Red3b, Color.Red,2);
+			PlotS(Panel3, Blue3b,Color.Blue,2);
+			PlotS(Panel3, Green3b,Color.Green,2);
+			PlotS(Panel3, Black3b,Color.Black,2);
+			PlotS(Panel4, Red4b, Color.Red,2);
+			PlotS(Panel4, Blue4b,Color.Blue,2);
+			PlotS(Panel4, Green4b,Color.Green,2);
+			PlotS(Panel4, Black4b,Color.Black,2);
+			#endregion		
+		}
+		
+		public void PlotS(ChartPane p,DataSeries d, Color c, int t)
+		{
+			if (d.Description=="Close-Close") d.Description="";
+			//PrintDebug("min: "+d.Description);
+		//	if (d.MinValue!=d.MaxValue | (d.Description=="1"))
+			if (d.MinValue!=0 | d.MaxValue!=0)
+				{
+				PlotSeries(p, d, c, LineStyle.Solid,t,d.Description);
+			}
+		}
+		
+		
+	}
+}</Code>
+  <Description />
+  <Author>Local</Author>
+  <CreationDate>2018-08-17T21:33:02.2043495+03:00</CreationDate>
+  <LastModified>2018-08-31T10:02:28.7651968+03:00</LastModified>
+  <StrategyType>Script</StrategyType>
+  <AccountNumber />
+  <NetworkDrivePath />
+  <ParameterValues />
+  <DataSetName>mfd</DataSetName>
+  <Symbol>SiM8</Symbol>
+  <DataScale>
+    <Scale>Minute</Scale>
+    <BarInterval>10</BarInterval>
+  </DataScale>
+  <PositionSize>
+    <Mode>RawProfitDollar</Mode>
+    <RawProfitDollarSize>5000</RawProfitDollarSize>
+    <RawProfitShareSize>100</RawProfitShareSize>
+    <StartingCapital>100000</StartingCapital>
+    <DollarSize>5000</DollarSize>
+    <ShareSize>100</ShareSize>
+    <PctSize>10</PctSize>
+    <RiskSize>3</RiskSize>
+    <SimuScriptName />
+    <PosSizerConfig />
+    <MarginFactor>1</MarginFactor>
+    <OverrideShareSize>0</OverrideShareSize>
+  </PositionSize>
+  <DataRange>
+    <Range>AllData</Range>
+    <StartDate>2013-08-14T00:00:00</StartDate>
+    <EndDate>2018-08-14T00:00:00</EndDate>
+    <FixedBars>500</FixedBars>
+    <RecentValue>10</RecentValue>
+    <IsStreaming>false</IsStreaming>
+  </DataRange>
+  <Indicators>AAAAAAAAAAA=</Indicators>
+  <Rules />
+  <SinglePosition>true</SinglePosition>
+  <References />
+  <PreferredValues />
+  <UsePreferredValues>false</UsePreferredValues>
+  <StartingEquity>100000</StartingEquity>
+  <MarginFactor>1</MarginFactor>
+  <PanelSize>W4=100;W3=100;W2=100;W1=90;P=172;V=15</PanelSize>
+  <Origin />
+  <CombinedStrategyChildren />
+</Strategy>

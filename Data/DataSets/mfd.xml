@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<DataSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>mfd</Name>
+  <Scale>Minute</Scale>
+  <BarInterval>10</BarInterval>
+  <DSString>{SOAP-ENV:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:clr="http://schemas.microsoft.com/soap/encoding/clr/1.0" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"}
+{SOAP-ENV:Body}
+{a1:AsciiFilesDataSet id="ref-1" xmlns:a1="http://schemas.microsoft.com/clr/nsassem/WealthLab.DataProviders.AsciiFilesStatic/WealthLab.DataProviders.AsciiFilesStatic%2C%20Version%3D1.3.4.1%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull"}
+{Fields href="#ref-3"/}
+{Options href="#ref-4"/}
+{Name id="ref-5"}Default{/Name}
+{Folder id="ref-6"}D:\mfd{/Folder}
+{Extension id="ref-7"}*.txt{/Extension}
+{ParseError}false{/ParseError}
+{/a1:AsciiFilesDataSet}
+{a1:FieldList id="ref-3" xmlns:a1="http://schemas.microsoft.com/clr/nsassem/WealthLab.DataProviders.AsciiFilesStatic/WealthLab.DataProviders.AsciiFilesStatic%2C%20Version%3D1.3.4.1%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull"}
+{Items href="#ref-8"/}
+{/a1:FieldList}
+{a1:FormatOptions id="ref-4" xmlns:a1="http://schemas.microsoft.com/clr/nsassem/WealthLab.DataProviders.AsciiFilesStatic/WealthLab.DataProviders.AsciiFilesStatic%2C%20Version%3D1.3.4.1%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull"}
+{DateFormat id="ref-9"}yyyyMMdd{/DateFormat}
+{TimeFormat id="ref-10"}Hmmss{/TimeFormat}
+{FieldSeparator id="ref-11"},{/FieldSeparator}
+{DecimalSeparator id="ref-12"}.{/DecimalSeparator}
+{ThousandsSeparator id="ref-13"}{/ThousandsSeparator}
+{IgnoreFirstLines}0{/IgnoreFirstLines}
+{IgnoreLastLines}0{/IgnoreLastLines}
+{VolumeMultiple}1{/VolumeMultiple}
+{ImpliedDecimals}0{/ImpliedDecimals}
+{/a1:FormatOptions}
+{a2:ArrayList id="ref-8" xmlns:a2="http://schemas.microsoft.com/clr/ns/System.Collections"}
+{_items href="#ref-14"/}
+{_size}9{/_size}
+{_version}16{/_version}
+{/a2:ArrayList}
+{SOAP-ENC:Array id="ref-14" SOAP-ENC:arrayType="xsd:anyType[16]"}
+{item href="#ref-15"/}
+{item href="#ref-16"/}
+{item href="#ref-17"/}
+{item href="#ref-18"/}
+{item href="#ref-19"/}
+{item href="#ref-20"/}
+{item href="#ref-21"/}
+{item href="#ref-22"/}
+{item href="#ref-23"/}
+{/SOAP-ENC:Array}
+{a1:Field id="ref-15" xmlns:a1="http://schemas.microsoft.com/clr/nsassem/WealthLab.DataProviders.AsciiFilesStatic/WealthLab.DataProviders.AsciiFilesStatic%2C%20Version%3D1.3.4.1%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull"}
+{Type}SecurityName{/Type}
+{_name id="ref-24"}Security Name{/_name}
+{/a1:Field}
+{a1:Field id="ref-16" xmlns:a1="http://schemas.microsoft.com/clr/nsassem/WealthLab.DataProviders.AsciiFilesStatic/WealthLab.DataProviders.AsciiFilesStatic%2C%20Version%3D1.3.4.1%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull"}
+{Type}Custom{/Type}
+{_name id="ref-25"}frame{/_name}
+{/a1:Field}
+{a1:Field id="ref-17" xmlns:a1="http://schemas.microsoft.com/clr/nsassem/WealthLab.DataProviders.AsciiFilesStatic/WealthLab.DataProviders.AsciiFilesStatic%2C%20Version%3D1.3.4.1%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull"}
+{Type}Date{/Type}
+{_name href="#ref-13"/}
+{/a1:Field}
+{a1:Field id="ref-18" xmlns:a1="http://schemas.microsoft.com/clr/nsassem/WealthLab.DataProviders.AsciiFilesStatic/WealthLab.DataProviders.AsciiFilesStatic%2C%20Version%3D1.3.4.1%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull"}
+{Type}Time{/Type}
+{_name id="ref-26"}Time{/_name}
+{/a1:Field}
+{a1:Field id="ref-19" xmlns:a1="http://schemas.microsoft.com/clr/nsassem/WealthLab.DataProviders.AsciiFilesStatic/WealthLab.DataProviders.AsciiFilesStatic%2C%20Version%3D1.3.4.1%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull"}
+{Type}Open{/Type}
+{_name href="#ref-13"/}
+{/a1:Field}
+{a1:Field id="ref-20" xmlns:a1="http://schemas.microsoft.com/clr/nsassem/WealthLab.DataProviders.AsciiFilesStatic/WealthLab.DataProviders.AsciiFilesStatic%2C%20Version%3D1.3.4.1%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull"}
+{Type}High{/Type}
+{_name href="#ref-13"/}
+{/a1:Field}
+{a1:Field id="ref-21" xmlns:a1="http://schemas.microsoft.com/clr/nsassem/WealthLab.DataProviders.AsciiFilesStatic/WealthLab.DataProviders.AsciiFilesStatic%2C%20Version%3D1.3.4.1%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull"}
+{Type}Low{/Type}
+{_name href="#ref-13"/}
+{/a1:Field}
+{a1:Field id="ref-22" xmlns:a1="http://schemas.microsoft.com/clr/nsassem/WealthLab.DataProviders.AsciiFilesStatic/WealthLab.DataProviders.AsciiFilesStatic%2C%20Version%3D1.3.4.1%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull"}
+{Type}Close{/Type}
+{_name href="#ref-13"/}
+{/a1:Field}
+{a1:Field id="ref-23" xmlns:a1="http://schemas.microsoft.com/clr/nsassem/WealthLab.DataProviders.AsciiFilesStatic/WealthLab.DataProviders.AsciiFilesStatic%2C%20Version%3D1.3.4.1%2C%20Culture%3Dneutral%2C%20PublicKeyToken%3Dnull"}
+{Type}Volume{/Type}
+{_name href="#ref-13"/}
+{/a1:Field}
+{/SOAP-ENV:Body}
+{/SOAP-ENV:Envelope}
+</DSString>
+  <ProviderName>AsciiFilesStaticProvider</ProviderName>
+</DataSet>

@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfRule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Rule>
+    <Name>Advance/Decline Ratio equal to or greater than Value</Name>
+    <Description>Select "Close" Series for Advance/Decline Issues Ratio
+Select "Volume" Series for Advance/Decline Volume Ratio</Description>
+    <Category>Market Sentiment</Category>
+    <Init>AdvDecRatio &lt;#ad&gt; = new AdvDecRatio(this, "&lt;#Exchange&gt;", "&lt;#Series&gt;", &lt;#Value&gt; );
+DataSeries &lt;#dsRatio&gt; = &lt;#ad&gt;.AdvDecRatioSeries; 
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar] &gt;= &lt;#Value&gt; )
+</Body>
+    <Plotting>&lt;#ad&gt;.plotAdvDecRatio();
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>e1f2613f-8a36-4a38-af53-e9df07aed1ea</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration>A/D Ratio is above ...</Decoration>
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Series</Name>
+        <Value>Close</Value>
+        <DefaultValue>Close</DefaultValue>
+        <ParamType>StandardDataSeries</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>ad</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Arms Index equal to or greater than Value</Name>
+    <Description />
+    <Category>Market Sentiment</Category>
+    <Init>ArmsIndex &lt;#ad&gt; = new ArmsIndex(this, "&lt;#Exchange&gt;", &lt;#Value&gt; );
+DataSeries &lt;#dsSTI&gt; = &lt;#ad&gt;.ArmsIndexSeries;
+</Init>
+    <Body>if( &lt;#dsSTI&gt;[bar] &gt;= &lt;#Value&gt; )
+</Body>
+    <Plotting>&lt;#ad&gt;.plotArmsIndexSeries();
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>81bfe870-bb99-4576-8799-40ddd73940b9</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>ad</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsSTI</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Advance/Decline Ratio equal to or less than Value</Name>
+    <Description>Select "Close" Series for Advance/Decline Issues Ratio
+Select "Volume" Series for Advance/Decline Volume Ratio</Description>
+    <Category>Market Sentiment</Category>
+    <Init>AdvDecRatio &lt;#ad&gt; = new AdvDecRatio(this, "&lt;#Exchange&gt;", "&lt;#Series&gt;", &lt;#Value&gt; );
+DataSeries &lt;#dsRatio&gt; = &lt;#ad&gt;.AdvDecRatioSeries; 
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar] &lt;= &lt;#Value&gt; )
+</Body>
+    <Plotting>&lt;#ad&gt;.plotAdvDecRatio();
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>e1f2613f-8a36-4a38-af53-e9df07aed1ea</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration>A/D Ratio is above ...</Decoration>
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Series</Name>
+        <Value>Close</Value>
+        <DefaultValue>Close</DefaultValue>
+        <ParamType>StandardDataSeries</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>ad</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>New High/Low Bearish Convergence</Name>
+    <Description>Over the period specified, both the index and the ratio have a downward trend. Bearish trend is determined by the rate-of-change (Momentum) over a period (Lookback Period) for the index. This is smoothed out via a simple moving average over a period (SMA Period). If the SMA of the Momentum for the index is less than 0, it indicates a bearish trend. If the SMA of the Momentum for the ratio is also less than 0, it indicates bearish convergence.</Description>
+    <Category>Market Sentiment</Category>
+    <Init>NewHighLow &lt;#nhl&gt; = new NewHighLow(this, "&lt;#Exchange&gt;", "&lt;#Index&gt;", &lt;#Lookback Period&gt;, &lt;#SMA Period&gt; );
+DataSeries &lt;#dsMomentumSMAIndex&gt; = &lt;#nhl&gt;.MomentumSMAIndexSeries; 
+DataSeries &lt;#dsMomentumSMARatio&gt; = &lt;#nhl&gt;.MomentumSMARatioSeries; 
+</Init>
+    <Body>if(( dsMomentumSMAIndex[bar] &lt; 0 )&amp;&amp;( dsMomentumSMARatio[bar] &lt; 0 ))
+</Body>
+    <Plotting>&lt;#nhl&gt;.plotMomentumSMA(50,true,true);
+&lt;#nhl&gt;.plotNewLows(50,true,true);
+&lt;#nhl&gt;.plotNewHighs(50,true,true);
+&lt;#nhl&gt;.plotIndex(50,true,true);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>c8ecb368-0fd9-4329-862e-f2d138640a78</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Index</Name>
+        <Value>.NYA</Value>
+        <DefaultValue>.NYA;.IXIC;.XAX;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Lookback Period</Name>
+        <Value>5</Value>
+        <DefaultValue>5</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>SMA Period</Name>
+        <Value>10</Value>
+        <DefaultValue>10</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>nhl</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsMomentumSMAIndex</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsMomentumSMARatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Advance/Decline Ratio crosses above Overbought/Oversold Level</Name>
+    <Description>Select "Close" Series for Advance/Decline Issues Ratio
+Select "Volume" Series for Advance/Decline Volume Ratio</Description>
+    <Category>Market Sentiment</Category>
+    <Init>AdvDecRatio &lt;#ad&gt; = new AdvDecRatio(this, "&lt;#Exchange&gt;", "&lt;#Series&gt;", &lt;#Overbought/Oversold Level&gt; );
+DataSeries &lt;#dsRatio&gt; = &lt;#ad&gt;.AdvDecRatioSeries; 
+</Init>
+    <Body>if( CrossOver( bar, &lt;#dsRatio&gt;, &lt;#Overbought/Oversold Level&gt; ) )
+</Body>
+    <Plotting>&lt;#ad&gt;.plotAdvDecRatio();
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>e1f2613f-8a36-4a38-af53-e9df07aed1ea</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration>A/D Ratio is above ...</Decoration>
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Series</Name>
+        <Value>Close</Value>
+        <DefaultValue>Close</DefaultValue>
+        <ParamType>StandardDataSeries</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Overbought/Oversold Level</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>ad</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Advance/Decline Ratio crosses below Overbought/Oversold Level</Name>
+    <Description>Select "Close" Series for Advance/Decline Issues Ratio
+Select "Volume" Series for Advance/Decline Volume Ratio</Description>
+    <Category>Market Sentiment</Category>
+    <Init>AdvDecRatio &lt;#ad&gt; = new AdvDecRatio(this, "&lt;#Exchange&gt;", "&lt;#Series&gt;", &lt;#Overbought/Oversold Level&gt; );
+DataSeries &lt;#dsRatio&gt; = &lt;#ad&gt;.AdvDecRatioSeries; 
+</Init>
+    <Body>if( CrossUnder( bar, &lt;#dsRatio&gt;, &lt;#Overbought/Oversold Level&gt; ) )
+</Body>
+    <Plotting>&lt;#ad&gt;.plotAdvDecRatio();
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>e1f2613f-8a36-4a38-af53-e9df07aed1ea</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration>A/D Ratio is above ...</Decoration>
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Series</Name>
+        <Value>Close</Value>
+        <DefaultValue>Close</DefaultValue>
+        <ParamType>StandardDataSeries</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Overbought/Oversold Level</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>ad</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Arms Index equal to or less than Value</Name>
+    <Description />
+    <Category>Market Sentiment</Category>
+    <Init>ArmsIndex &lt;#ad&gt; = new ArmsIndex(this, "&lt;#Exchange&gt;", &lt;#Value&gt; );
+DataSeries &lt;#dsSTI&gt; = &lt;#ad&gt;.ArmsIndexSeries;
+</Init>
+    <Body>if( &lt;#dsSTI&gt;[bar] &lt;= &lt;#Value&gt; )
+</Body>
+    <Plotting>&lt;#ad&gt;.plotArmsIndexSeries();
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>81bfe870-bb99-4576-8799-40ddd73940b9</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>ad</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsSTI</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>New High/Low Bearish Divergence</Name>
+    <Description>Over the period specified, the index has a downward trend while the ratio has an upward trend. Bearish trend is determined by the rate-of-change (Momentum) over a period (Lookback Period) for the index. This is smoothed out via a simple moving average over a period (SMA Period). If the SMA of the Momentum for the index is less than 0, it indicates a bearish trend. If the SMA of the Momentum for the ratio is greater than 0, it indicates bearish divergence.</Description>
+    <Category>Market Sentiment</Category>
+    <Init>NewHighLow &lt;#nhl&gt; = new NewHighLow(this, "&lt;#Exchange&gt;", "&lt;#Index&gt;", &lt;#Lookback Period&gt;, &lt;#SMA Period&gt; );
+DataSeries &lt;#dsMomentumSMAIndex&gt; = &lt;#nhl&gt;.MomentumSMAIndexSeries; 
+DataSeries &lt;#dsMomentumSMARatio&gt; = &lt;#nhl&gt;.MomentumSMARatioSeries; 
+</Init>
+    <Body>if(( dsMomentumSMAIndex[bar] &lt; 0 )&amp;&amp;( dsMomentumSMARatio[bar] &gt; 0 ))
+</Body>
+    <Plotting>&lt;#nhl&gt;.plotMomentumSMA(50,true,true);
+&lt;#nhl&gt;.plotNewLows(50,true,true);
+&lt;#nhl&gt;.plotNewHighs(50,true,true);
+&lt;#nhl&gt;.plotIndex(50,true,true);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>c8ecb368-0fd9-4329-862e-f2d138640a78</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Index</Name>
+        <Value>.NYA</Value>
+        <DefaultValue>.NYA;.IXIC;.XAX;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Lookback Period</Name>
+        <Value>5</Value>
+        <DefaultValue>5</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>SMA Period</Name>
+        <Value>10</Value>
+        <DefaultValue>10</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>nhl</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsMomentumSMAIndex</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsMomentumSMARatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>New High/Low Bullish Convergence</Name>
+    <Description>Over the period specified, both the index and the ratio have an upward trend. Bullish trend is determined by the rate-of-change (Momentum) over a period (MomentumPeriod) for the index. This is smoothed out via a simple moving average over a period (SMAPeriod). If the SMA of the Momentum for the index is greater than 0, it indicates a bullish trend. If the SMA of the Momentum for the ratio is also greater than 0, it indicates bullish convergence.</Description>
+    <Category>Market Sentiment</Category>
+    <Init>NewHighLow &lt;#nhl&gt; = new NewHighLow(this, "&lt;#Exchange&gt;", "&lt;#Index&gt;", &lt;#Lookback Period&gt;, &lt;#SMA Period&gt; );
+DataSeries &lt;#dsMomentumSMAIndex&gt; = &lt;#nhl&gt;.MomentumSMAIndexSeries; 
+DataSeries &lt;#dsMomentumSMARatio&gt; = &lt;#nhl&gt;.MomentumSMARatioSeries; 
+</Init>
+    <Body>if(( dsMomentumSMAIndex[bar] &gt; 0 )&amp;&amp;( dsMomentumSMARatio[bar] &gt; 0 ))
+</Body>
+    <Plotting>&lt;#nhl&gt;.plotMomentumSMA(50,true,true);
+&lt;#nhl&gt;.plotNewLows(50,true,true);
+&lt;#nhl&gt;.plotNewHighs(50,true,true);
+&lt;#nhl&gt;.plotIndex(50,true,true);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>c8ecb368-0fd9-4329-862e-f2d138640a78</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Index</Name>
+        <Value>.NYA</Value>
+        <DefaultValue>.NYA;.IXIC;.XAX;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Lookback Period</Name>
+        <Value>5</Value>
+        <DefaultValue>5</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>SMA Period</Name>
+        <Value>10</Value>
+        <DefaultValue>10</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>nhl</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsMomentumSMAIndex</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsMomentumSMARatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>New High/Low Bullish Divergence</Name>
+    <Description>Over the period specified, the index has an upward trend while the ratio has a downward trend. Bullish trend is determined by the rate-of-change (Momentum) over a period (MomentumPeriod) for the index. This is smoothed out via a simple moving average over a period (SMAPeriod). If the SMA of the Momentum for the index is greater than 0, it indicates a bullish trend. If the SMA of the Momentum for the ratio is less than 0, it indicates bullish divergence.</Description>
+    <Category>Market Sentiment</Category>
+    <Init>NewHighLow &lt;#nhl&gt; = new NewHighLow(this, "&lt;#Exchange&gt;", "&lt;#Index&gt;", &lt;#Lookback Period&gt;, &lt;#SMA Period&gt; );
+DataSeries &lt;#dsMomentumSMAIndex&gt; = &lt;#nhl&gt;.MomentumSMAIndexSeries; 
+DataSeries &lt;#dsMomentumSMARatio&gt; = &lt;#nhl&gt;.MomentumSMARatioSeries; 
+</Init>
+    <Body>if(( dsMomentumSMAIndex[bar] &gt; 0 )&amp;&amp;( dsMomentumSMARatio[bar] &lt; 0 ))
+</Body>
+    <Plotting>&lt;#nhl&gt;.plotMomentumSMA(50,true,true);
+&lt;#nhl&gt;.plotNewLows(50,true,true);
+&lt;#nhl&gt;.plotNewHighs(50,true,true);
+&lt;#nhl&gt;.plotIndex(50,true,true);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>c8ecb368-0fd9-4329-862e-f2d138640a78</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Index</Name>
+        <Value>.NYA</Value>
+        <DefaultValue>.NYA;.IXIC;.XAX;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Lookback Period</Name>
+        <Value>5</Value>
+        <DefaultValue>5</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>SMA Period</Name>
+        <Value>10</Value>
+        <DefaultValue>10</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>nhl</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsMomentumSMAIndex</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsMomentumSMARatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Arms Index crosses above Overbought/Oversold Level</Name>
+    <Description />
+    <Category>Market Sentiment</Category>
+    <Init>ArmsIndex &lt;#ad&gt; = new ArmsIndex(this, "&lt;#Exchange&gt;", &lt;#Overbought/Oversold Level&gt; );
+DataSeries &lt;#dsSTI&gt; = &lt;#ad&gt;.ArmsIndexSeries;
+</Init>
+    <Body>if( CrossOver( bar, &lt;#dsSTI&gt;, &lt;#Overbought/Oversold Level&gt; ) )
+</Body>
+    <Plotting>&lt;#ad&gt;.plotArmsIndexSeries();
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>81bfe870-bb99-4576-8799-40ddd73940b9</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Overbought/Oversold Level</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>ad</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsSTI</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Arms Index crosses below Overbought/Oversold Level</Name>
+    <Description />
+    <Category>Market Sentiment</Category>
+    <Init>ArmsIndex &lt;#ad&gt; = new ArmsIndex(this, "&lt;#Exchange&gt;", &lt;#Overbought/Oversold Level&gt; );
+DataSeries &lt;#dsSTI&gt; = &lt;#ad&gt;.ArmsIndexSeries;
+</Init>
+    <Body>if( CrossUnder( bar, &lt;#dsSTI&gt;, &lt;#Overbought/Oversold Level&gt; ) )
+</Body>
+    <Plotting>&lt;#ad&gt;.plotArmsIndexSeries();
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>81bfe870-bb99-4576-8799-40ddd73940b9</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Overbought/Oversold Level</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>ad</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsSTI</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>New High/Low Ratio equal to or less than a Value</Name>
+    <Description />
+    <Category>Market Sentiment</Category>
+    <Init>NewHighLow &lt;#nhl&gt; = new NewHighLow(this, "&lt;#Exchange&gt;", "", 0, 0 );
+&lt;#nhl&gt;.Threshold = &lt;#Value&gt;;
+DataSeries &lt;#dsNewHighLowRatio&gt; = &lt;#nhl&gt;.NewHighLowRatioSeries; 
+</Init>
+    <Body>if( &lt;#dsNewHighLowRatio&gt;[bar] &lt;= &lt;#Value&gt; )
+</Body>
+    <Plotting>&lt;#nhl&gt;.plotNewLows(50,true,true);
+&lt;#nhl&gt;.plotNewHighs(50,true,true);
+&lt;#nhl&gt;.plotNewHighLowRatio(50,true,true);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>c8ecb368-0fd9-4329-862e-f2d138640a78</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>nhl</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsNewHighLowRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>New High/Low Ratio equal to or greater than a Value</Name>
+    <Description />
+    <Category>Market Sentiment</Category>
+    <Init>NewHighLow &lt;#nhl&gt; = new NewHighLow(this, "&lt;#Exchange&gt;", "", 0, 0 );
+&lt;#nhl&gt;.Threshold = &lt;#Value&gt;;
+DataSeries &lt;#dsNewHighLowRatio&gt; = &lt;#nhl&gt;.NewHighLowRatioSeries; 
+</Init>
+    <Body>if( &lt;#dsNewHighLowRatio&gt;[bar] &gt;= &lt;#Value&gt; )
+</Body>
+    <Plotting>&lt;#nhl&gt;.plotNewLows(50,true,true);
+&lt;#nhl&gt;.plotNewHighs(50,true,true);
+&lt;#nhl&gt;.plotNewHighLowRatio(50,true,true);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>c8ecb368-0fd9-4329-862e-f2d138640a78</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Exchange</Name>
+        <Value>NYSE</Value>
+        <DefaultValue>NYSE;Nasdaq;AMEX; </DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>nhl</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsNewHighLowRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+</ArrayOfRule>

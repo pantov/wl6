@@ -1,0 +1,274 @@
+<?xml version="1.0"?>
+<Strategy xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>ESS Sector Rotation</Name>
+  <ID>88ebd37b-24ec-4b17-ab8f-e13c6dc7b328</ID>
+  <Code>using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Drawing;
+using WealthLab;
+using WealthLab.Indicators;
+using WealthLab.DataProviders;
+ 
+namespace WealthLab.Strategies
+{	
+	public class ESSRotation : WealthScript, IComparer&lt;ESSHolder&gt;		
+	{		
+		private StrategyParameter numberOfSymbols;
+
+		public ESSRotation()
+		{
+			numberOfSymbols = CreateParameter("n Symbols", 1, 1, 10, 1);
+		}		
+		
+		protected override void Execute()
+		{
+			//Validate that all data is updated
+			DateTime recentDate = DateTime.MinValue;
+			foreach(string symbol in DataSetSymbols)
+			{
+				Bars b = GetExternalSymbol(symbol, false);
+				PrintStatusBar("Accessing: " + symbol);
+				DataSeries ESSSeries = FundamentalDataSeries(symbol, "equity summary score");
+				ESSSeries.Description = "ESS";
+				b.Cache["ESS"] = ESSSeries;
+				if (b.Count &gt; 0 &amp;&amp; b.Date[b.Count - 1] &gt; recentDate)
+					recentDate = b.Date[b.Count - 1];
+			}
+			string needUpdates = "";
+			foreach(string symbol in DataSetSymbols)
+			{
+				Bars b = GetExternalSymbol(symbol, false);
+				if (b == null)
+				{
+					System.Windows.Forms.MessageBox.Show("No data for symbol: " + symbol);
+					return;
+				}
+				if (b.Count == 0)
+					needUpdates += symbol + ", ";
+				else if (b.Date[b.Count - 1] != recentDate)
+					needUpdates += symbol + ", ";
+			}
+			if (needUpdates != "")
+			{
+				string s = "The ESS Rotation Strategy requires that all Symbols be updated.  It appears that the following " +
+					"Symbols need updating: " + needUpdates;
+				System.Windows.Forms.MessageBox.Show(s);
+				DrawLabel(PricePane, "The following Symbols appear to need data updates: " + needUpdates, Color.Black);
+				PrintStatusBar("Need update: " + needUpdates);
+				return;
+			}
+   
+			//Clear cached symbol list so they can be re-requested with synchronization
+			ClearExternalSymbols();		
+			
+			ChartPane pane1 = CreatePane(75,true,true);
+			ChartPane Pane = pane1;
+			SetPaneMinMax(Pane, 0, 10);
+			PlotSeries(Pane, FundamentalDataSeries("equity summary score"), Color.Black, LineStyle.Solid, 2);
+			Color red = Color.FromArgb(64, 204, 0, 0);
+			Color orange = Color.FromArgb(64, 126, 33, 33);
+			Color grey = Color.FromArgb(64, 153, 153, 153);
+			Color yellow = Color.FromArgb(64, 58, 124, 0);
+			Color green = Color.FromArgb(64, 153, 170, 0);
+			DrawHorizontalBand(Pane, Color.Gray, red, LineStyle.Solid, 1, 0, 1);
+			DrawHorizontalBand(Pane, Color.Gray, orange, LineStyle.Solid, 1, 1, 3);
+			DrawHorizontalBand(Pane, Color.Gray, grey, LineStyle.Solid, 1, 3, 7);
+			DrawHorizontalBand(Pane, Color.Gray, yellow, LineStyle.Solid, 1, 7, 9);
+			DrawHorizontalBand(Pane, Color.Gray, green, LineStyle.Solid, 1, 9, 10);
+   
+			//Execute rotation strategy
+			Dictionary&lt;string, List&lt;ESSHolder&gt;&gt; masterDictionary = new Dictionary&lt;string, List&lt;ESSHolder&gt;&gt;();
+			for(int bar = 0; bar &lt; Bars.Count; bar++)
+			{
+				PrintStatusBar("Processing Bar " + bar);  // This slows things down considerably    
+				//Identify the 3 symbols that have the highest ESS
+				masterDictionary.Clear();
+				foreach(string symbol in DataSetSymbols)
+				{
+					SetContext(symbol, true);
+					
+					if (Bars.FirstActualBar &lt; bar)
+					{
+						ESSHolder holder = new ESSHolder();
+						holder.symbol = symbol;
+						try
+						{
+							FundamentalItem fi = GetFundamentalItem(bar, symbol, "equity summary score");
+							if (fi != null)
+							{
+								holder.ess = fi.Value;
+								
+								//get the GICS sector for the symbol
+								string sector = Gics.GetSector(symbol);
+					
+								//do we have an entry for this sector already?
+								List&lt;ESSHolder&gt; lst;
+								if (masterDictionary.ContainsKey(sector))
+								{
+									lst = masterDictionary[sector];
+								}
+								else
+								{
+									//no, create a new list and add the entry to the dictionary
+									lst = new List&lt;ESSHolder&gt;();
+									masterDictionary[sector] = lst;
+								}
+								lst.Add(holder);
+							}
+						}
+						catch
+						{
+							//no ESS value
+						}
+					}
+					RestoreContext();
+				}
+				
+				if (masterDictionary.Count == 0)
+					continue;
+				
+				//sort each of the lists in the dictionary, highest ESS to lowest
+				foreach(List&lt;ESSHolder&gt; list in masterDictionary.Values)
+					list.Sort(this);
+				
+				//create a list containing the top N symbols in each sector
+				int num = (int)numberOfSymbols.Value;
+				List&lt;ESSHolder&gt; listTop = new List&lt;ESSHolder&gt;();
+				foreach(List&lt;ESSHolder&gt; sectorList in masterDictionary.Values)
+					for(int n = 0; n &lt; num; n++)
+						if (n &lt; sectorList.Count)
+							listTop.Add(sectorList[n]);
+    
+				//Close positions that are not in the new lowest
+				for(int pos = ActivePositions.Count - 1; pos &gt;= 0; pos--)
+				{
+					Position p = ActivePositions[pos];
+					bool keepPosition = false;
+					foreach(ESSHolder holder in listTop)
+						if (holder.symbol == p.Bars.Symbol)
+						{
+							keepPosition = true;
+							break;
+						}
+					if (!keepPosition)     
+						SellAtMarket(bar + 1, p);           
+				}
+    
+				//Buy new positions
+				foreach(ESSHolder holder in listTop)
+				{
+					bool buyPosition = true;
+					foreach(Position p in ActivePositions)
+						if (p.Bars.Symbol == holder.symbol)
+						{
+							buyPosition = false;
+							break;
+						}
+					if (buyPosition)
+					{
+						SetContext(holder.symbol, true);
+						BuyAtMarket(bar + 1);
+						RestoreContext();
+					}
+				}
+			}
+			PrintStatusBar("Strategy completed!");
+		}
+  
+		public int Compare(ESSHolder item1, ESSHolder item2)
+		{
+			return -item1.ess.CompareTo(item2.ess);
+		}
+	}
+	public class ESSHolder
+	{
+		internal string symbol;
+		internal double ess;
+	}
+}
+</Code>
+  <Description>&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta http-equiv="Content-Language" content="en-us"&gt;
+			&lt;meta name="GENERATOR" content="Microsoft FrontPage 4.0"&gt;
+				&lt;meta name="ProgId" content="FrontPage.Editor.Document"&gt;
+					&lt;meta http-equiv="Content-Type" content="text/html; charset=windows-1252"&gt;
+						&lt;title&gt;ESS Sector Rotation&lt;/title&gt;
+						&lt;style&gt;
+							&lt;!--
+							body         { font-family: Tahoma; font-size: 8pt }
+							h1           { font-family: Tahoma; font-size: 12pt; font-weight: bold }
+							h2           { font-family: Tahoma; font-size: 10pt; font-weight: bold }
+							--&gt;
+							&lt;/style&gt;
+						&lt;/head&gt;
+					&lt;h1&gt;&lt;font size="2" face="Verdana"&gt;ESS Sector Rotation&lt;/font&gt;&lt;/h1&gt;
+					&lt;p class="MsoNormal"&gt;&lt;font size="2"&gt;&lt;span style="font-family: Verdana"&gt;ESS Sector
+								Rotation is a non-Intraday strategy that continuously holds &lt;i&gt;n&lt;/i&gt; stocks of a
+								DataSet that have the highest Equity Summar Score value.&amp;nbsp; The Strategy will buy the top performing symbol in each of the GICs sector codes.  You can adjust Portfolio
+								Simulation Mode sizing appropriately for the number of positions that you wish to hold. For
+								example, for a maximum of 3 positions you might set 33.3% of Equity sizing.&amp;nbsp; &lt;/span&gt;&lt;/font&gt;&lt;/p&gt;
+
+					&lt;table border="1" cellpadding="2" width="80%" style="border-style: solid" bgcolor="#FFFFE6"&gt;
+						&lt;tr&gt;
+							&lt;td width="100%"&gt;&lt;font size="2"&gt;&lt;span style="font-family: Verdana"&gt;&lt;b&gt;Tip:&lt;/b&gt;
+										&amp;nbsp;&lt;br&gt;
+											To avoid dropped trades due to opening gaps, set the margin factor slightly
+											above 1 (e.g., 1.05:1), or, use a slightly smaller Percent of Equity size.&lt;/span&gt;&lt;/font&gt;&lt;/td&gt;
+								&lt;/tr&gt;
+							&lt;/table&gt;
+
+						&lt;p class="MsoNormal"&gt;&lt;font size="2"&gt;&lt;span style="font-family: Verdana"&gt;The
+									Strategy is easy to trade (uses AtMarket orders), but the &amp;quot;Ulcer
+									Index&amp;quot; is high since the Strategy could potentially ride losing positions
+									for large losses.&amp;nbsp; Try backtesting this on a DataSet of blue-chip companies, like the Dow 30. &lt;/span&gt;&lt;/font&gt;&lt;/p&gt;
+
+						&lt;/html&gt;</Description>
+  <Author>Local</Author>
+  <CreationDate>2014-04-22T13:59:17.5260394-04:00</CreationDate>
+  <LastModified>2014-05-06T16:20:52.7435756-04:00</LastModified>
+  <StrategyType>Script</StrategyType>
+  <AccountNumber />
+  <NetworkDrivePath />
+  <ParameterValues />
+  <DataSetName>Dow 30</DataSetName>
+  <Symbol>AA</Symbol>
+  <DataScale>
+    <Scale>Daily</Scale>
+    <BarInterval>0</BarInterval>
+  </DataScale>
+  <PositionSize>
+    <Mode>Dollar</Mode>
+    <RawProfitDollarSize>50000</RawProfitDollarSize>
+    <RawProfitShareSize>100</RawProfitShareSize>
+    <StartingCapital>1200000</StartingCapital>
+    <DollarSize>100000</DollarSize>
+    <ShareSize>100</ShareSize>
+    <PctSize>33</PctSize>
+    <RiskSize>3</RiskSize>
+    <SimuScriptName />
+    <PosSizerConfig />
+    <MarginFactor>1.2</MarginFactor>
+    <OverrideShareSize>0</OverrideShareSize>
+  </PositionSize>
+  <DataRange>
+    <Range>RecentYears</Range>
+    <StartDate>2009-08-01T00:00:00</StartDate>
+    <EndDate>2014-12-31T00:00:00</EndDate>
+    <FixedBars>500</FixedBars>
+    <RecentValue>1</RecentValue>
+    <IsStreaming>false</IsStreaming>
+  </DataRange>
+  <Indicators>AAAAAAAAAAA=</Indicators>
+  <Rules />
+  <SinglePosition>true</SinglePosition>
+  <References />
+  <PreferredValues />
+  <UsePreferredValues>false</UsePreferredValues>
+  <StartingEquity>100000</StartingEquity>
+  <MarginFactor>1</MarginFactor>
+  <PanelSize />
+  <Origin />
+  <CombinedStrategyChildren />
+</Strategy>

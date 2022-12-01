@@ -1,0 +1,1917 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfRule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Rule>
+    <Name>Per Share (mrq) is greater than a Value</Name>
+    <Description>A Fundamental Item per Share for the most-recent quarter (mrq).  Possible values: Assets, Book Value, Current Assets, Income, Sales, Total Inventories, and Total Receivables. Enter the value in dollars per share; e.g. 20 = $20/share</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.PerShareSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), false );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Dollars/Share&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; Per Share (mrq)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Assets</Value>
+        <DefaultValue>Assets;Book Value;Current Assets;Income;Sales;Total Inventories;Total Receivables</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Dollars/Share</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Per Share (ttm) is greater than a Value</Name>
+    <Description>A Fundamental Item per Share for the trailing twelve months (ttm).  Possible values: Assets, Book Value, Current Assets, Income, Sales, Total Inventories, and Total Receivables. Enter the value in dollars per share; e.g. 20 = $20/share</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.PerShareSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), true );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Dollars/Share&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; Per Share (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Assets</Value>
+        <DefaultValue>Assets;Book Value;Current Assets;Income;Sales;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Dollars/Share</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Per Share (mrq) is less than a Value</Name>
+    <Description>A Fundamental Item per Share for the most-recent quarter (mrq).  Possible values: Assets, Book Value, Current Assets, Income, Sales, Total Inventories, and Total Receivables. Enter the value in dollars per share; e.g. 20 = $20/share</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.PerShareSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), false );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Dollars/Share&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; Per Share (mrq)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Assets</Value>
+        <DefaultValue>Assets;Book Value;Current Assets;Income;Sales;Total Inventories;Total Receivables</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Dollars/Share</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Per Share (ttm) is less than a Value</Name>
+    <Description>A Fundamental Item per Share for the trailing twelve months (ttm).  Possible values: Assets, Book Value, Current Assets, Income, Sales, Total Inventories, and Total Receivables. Enter the value in dollars per share; e.g. 20 = $20/share</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.PerShareSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), true );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Dollars/Share&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; Per Share (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Assets</Value>
+        <DefaultValue>Assets;Book Value;Current Assets;Income;Sales;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Dollars/Share</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Growth Rate (qtr over qtr) is above a Pct</Name>
+    <Description>Growth rate is expressed as percentage growth with respect to the specified number of Quarters ago. For example: 10 = 10% growth quarter over quarter (qoq)</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.GrowthRateSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), &lt;#Quarters&gt;, false );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar] &gt; &lt;#Growth Rate (Pct)&gt; )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; Growth Rate over " + &lt;#Quarters&gt;.ToString() + " quarters";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>fb1557df-be6c-484c-bc91-70a26ccc3d9a</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Quarters</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Growth Rate (Pct)</Name>
+        <Value>0</Value>
+        <DefaultValue>0</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>1000</Stop>
+        <Step>10</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Cash Flow</Value>
+        <DefaultValue>Cash Flow;Earnings;Sales;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Growth Rate (qtr over qtr) is below a Pct</Name>
+    <Description>Growth rate is expressed as percentage growth with respect to the specified number of Quarters ago. For example: 10 = 10% growth quarter over quarter (qoq)</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.GrowthRateSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), &lt;#Quarters&gt;, false );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar] &lt; &lt;#Growth Rate (Pct)&gt; )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; Growth Rate over " + &lt;#Quarters&gt;.ToString() + " quarters";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>fb1557df-be6c-484c-bc91-70a26ccc3d9a</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Quarters</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Growth Rate (Pct)</Name>
+        <Value>0</Value>
+        <DefaultValue>0</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>1000</Stop>
+        <Step>10</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Cash Flow</Value>
+        <DefaultValue>Cash Flow;Earnings;Sales;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Price/Fundamental ratio (ttm) is below a ratio</Name>
+    <Description>Price/Fundamental ratio annualized for the trailing 12 months (ttm). Valid fundamentals: Cash Flow, Earnings, and Sales</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.PriceToRatioSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;") );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar] &lt; &lt;#Ratio&gt; )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Price/&lt;#Fundamental&gt; Ratio (annual)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>fb1557df-be6c-484c-bc91-70a26ccc3d9a</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Ratio</Name>
+        <Value>0</Value>
+        <DefaultValue>0</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Cash Flow</Value>
+        <DefaultValue>Cash Flow;Earnings;Sales;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Price/Fundamental ratio (ttm) is above a ratio</Name>
+    <Description>Price/Fundamental ratio annualized for the trailing 12 months (ttm). Valid fundamentals: Cash Flow, Earnings, and Sales</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.PriceToRatioSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;") );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar] &gt; &lt;#Ratio&gt; )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Price/&lt;#Fundamental&gt; Ratio (annual)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>fb1557df-be6c-484c-bc91-70a26ccc3d9a</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Ratio</Name>
+        <Value>0</Value>
+        <DefaultValue>0</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Cash Flow</Value>
+        <DefaultValue>Cash Flow;Earnings;Sales;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Fundamental (mrq) is greater than a Value</Name>
+    <Description>A Fundamental Item for the most-recent quarter (mrq).  </Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.FundamentalSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), false );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Value&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; (mrq)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>accounts payable</Value>
+        <DefaultValue>accounts payable;assets;cash;cash dividends;common shares outstanding;current assets;current liabilities;interest expense;liabilities;long term debt;net income;operating activities;operating income before depreciation;pretax income;property plant and equipment;research and development expense;sales turnover;stock compensation expense;stockholder equity;total inventories;total receivables;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Fundamental (mrq) is less than a Value</Name>
+    <Description>A Fundamental Item for the most-recent quarter (mrq).  </Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.FundamentalSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), false );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Value&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; (mrq)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>accounts payable</Value>
+        <DefaultValue>accounts payable;assets;cash;cash dividends;common shares outstanding;current assets;current liabilities;interest expense;liabilities;long term debt;net income;operating activities;operating income before depreciation;pretax income;property plant and equipment;research and development expense;sales turnover;stock compensation expense;stockholder equity;total inventories;total receivables;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Fundamental (ttm) is greater than a Value</Name>
+    <Description>A Fundamental Item for the trailing twelve month (ttm).  </Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.FundamentalSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), true );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Value&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>assets</Value>
+        <DefaultValue>assets;cash;cash dividends;common shares used to calculate eps diluted;current assets;current liabilities;ebit;employee;goodwill;liabilities;long term debt;net income;operating activities;operating income before depreciation;pretax income;sales turnover;stockholder equity;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Fundamental (ttm) is less than a Value</Name>
+    <Description>A Fundamental Item for the trailing twelve month (ttm).  </Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.FundamentalSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), true );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Value&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>assets</Value>
+        <DefaultValue>assets;cash;cash dividends;common shares used to calculate eps diluted;current assets;current liabilities;ebit;employee;goodwill;liabilities;long term debt;net income;operating activities;operating income before depreciation;pretax income;sales turnover;stockholder equity;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Return on Fundamental (mrq) is greater than a Value</Name>
+    <Description>Return on fundamental item percentage (Assets or Equity) for the most recent quarter (mrq).</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.ReturnOnSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), false );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Value&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Return on &lt;#Fundamental&gt; (mrq)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Assets</Value>
+        <DefaultValue>Assets;Current Assets;Equity;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Return on Fundamental (mrq) is less than a Value</Name>
+    <Description>Return on fundamental percentage (Assets or Equity) for the most recent quarter (mrq).</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.ReturnOnSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), false );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Value&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Return on &lt;#Fundamental&gt; (mrq)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Assets</Value>
+        <DefaultValue>Assets;Current Assets;Equity;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Return on Fundamental (ttm) is greater than a Value</Name>
+    <Description>Return on fundamental percentage for the trailing 12 months (ttm).  Assets or Equity is aggregated and averaged for the previous 4 quarters.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.ReturnOnSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), true );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Value&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Return on &lt;#Fundamental&gt; (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Assets</Value>
+        <DefaultValue>Assets;Current Assets;Equity;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Return on Fundamental (ttm) is less than a Value</Name>
+    <Description>Return on fundamental percentage for the trailing 12 months (ttm).  Assets or Equity is aggregated and averaged for the previous 4 quarters.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.ReturnOnSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), true );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Value&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Return on &lt;#Fundamental&gt; (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Assets</Value>
+        <DefaultValue>Assets;Current Assets;Equity;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Current Ratio (ttm) is greater than a Value</Name>
+    <Description>Current Ratio is annualized for the trailing 12 months (ttm) by aggregating and dividing current assets by current liabilities for the past 4 quarters.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.RatioSeries( this, "current assets", "current liabilities", true );
+    </Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Current Ratio&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Current Ratio (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Current Ratio</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Current Ratio (ttm) is less than a Value</Name>
+    <Description>Current Ratio is annualized for the trailing 12 months (ttm) by aggregating and dividing current assets by current liabilities for the past 4 quarters.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.RatioSeries( this, "current assets", "current liabilities", true );
+    </Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Current Ratio&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Current Ratio (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Current Ratio</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Current Ratio (mrq) is greater than a Value</Name>
+    <Description>Current Ratio for the most-recent quarter (mrq) is calculated by dividing current assets by current liabilities.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.RatioSeries( this, "current assets", "current liabilities", false );
+    </Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Current Ratio&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Current Ratio (mrq)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Current Ratio</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Current Ratio (mrq) is less than a Value</Name>
+    <Description>Current Ratio for the most-recent quarter (mrq) is calculated by dividing current assets by current liabilities.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.RatioSeries( this, "current assets", "current liabilities", false );
+    </Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Current Ratio&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Current Ratio (mrq)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Current Ratio</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Debt to Asset Ratio (mrq) is less than a Value</Name>
+    <Description>Debt-to-Asset Ratio for the most-recent quarter (mrq).  The Debt-to-Asset Ratio is calculated by dividing total liabilities by total assets.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.RatioSeries( this, "liabilities", "assets", false );
+    </Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Debt to Asset&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Debt to Asset Ratio (mrq)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Debt to Asset</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Debt to Asset Ratio (mrq) is greater than a Value</Name>
+    <Description>Debt-to-Asset Ratio for the most-recent quarter (mrq).  The Debt-to-Asset Ratio is calculated by dividing total liabilities by total assets.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.RatioSeries( this, "liabilities", "assets", false );
+    </Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Debt to Asset&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Debt to Asset Ratio (mrq)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Debt to Asset</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Debt to Asset Ratio (ttm) is less than a Value</Name>
+    <Description>Debt-to-Asset Ratio is annualized for the trailing 12 months (ttm) by aggregating and dividing total liabilities by total assets for the past 4 quarters.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.RatioSeries( this, "liabilities", "assets", true );
+    </Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Debt to Asset&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Debt to Asset Ratio (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Debt to Asset</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Debt to Asset Ratio (ttm) is greater than a Value</Name>
+    <Description>Debt-to-Asset Ratio is annualized for the trailing 12 months (ttm) by aggregating and dividing total liabilities by total assets for the past 4 quarters.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.RatioSeries( this, "liabilities", "assets", true );
+    </Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Debt to Asset&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Debt to Asset Ratio (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Debt to Asset</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Return on Capital (ttm) is greater than a Value</Name>
+    <Description>Return on Capital percentage for the trailing 12 months (ttm).  Inventories, Receivables, Liabilities and Assets are aggregated and averaged for the previous 4 quarters.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.ReturnOnCapitalSeries( this );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Return (Pct)&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Return on Capital (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Return (Pct)</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Return on Capital (ttm) is less than a Value</Name>
+    <Description>Return on Capital percentage for the trailing 12 months (ttm).  Inventories, Receivables, Liabilities and Assets are aggregated and averaged for the previous 4 quarters.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.ReturnOnCapitalSeries( this );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Return (Pct)&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Return on Capital (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Return (Pct)</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Sales per Employee (ttm) is less than a Value</Name>
+    <Description>Sales per employee (thousands of dollars) aggregated for the trailing 12 months (ttm). For example: 150 = $150,000 per employee</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.SalesPerEmployeeSeries( this );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Dollars (1,000s)/Empl&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Sales per Employee (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Dollars (1,000s)/Empl</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Sales per Employee (ttm) is greater than a Value</Name>
+    <Description>Sales per employee (thousands of dollars) aggregated for the trailing 12 months (ttm). For example: 150 = $150,000 per employee</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.SalesPerEmployeeSeries( this );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Dollars (1,000s)/Empl&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Sales per Employee (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Dollars (1,000s)/Empl</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Fundamental Yield (ttm) is greater than a Value</Name>
+    <Description>Dividend or Earnings Yield is annualized for the trailing 12 months (ttm) and expressed as a percentage. For example: 0.5 = 0.5% yield</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.YieldSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;") );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Yield (Pct)&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; Yield (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Yield (Pct)</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Dividend</Value>
+        <DefaultValue>Dividend;Earnings;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Fundamental Yield (ttm) is less than a Value</Name>
+    <Description>Dividend or Earnings Yield is annualized for the trailing 12 months (ttm) and expressed as a percentage. For example: 0.5 = 0.5% yield</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.YieldSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;") );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Yield (Pct)&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; Yield (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Yield (Pct)</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Dividend</Value>
+        <DefaultValue>Dividend;Earnings;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Enterprise Value (ttm) is greater than a Value</Name>
+    <Description>Enterprise Value (millions of dollars) for the trailing 12 months (ttm) is a measure of company's value calculated as market capitalization plus debt and preferred shares, minus cash and cash equivalents. For example: 12345.67 = 12 billion, 345 million, 67 thousand dollars</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.EnterpriseValueSeries( this );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Dollars (Millions)&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Enterprise Value (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Dollars (Millions)</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Enterprise Value (ttm) is less than a Value</Name>
+    <Description>Enterprise Value (millions of dollars) for the trailing 12 months (ttm) is a measure of company's value calculated as market capitalization plus debt and preferred shares, minus cash and cash equivalents. For example: 12345.67 = 12 billion, 345 million, 67 thousand dollars</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.EnterpriseValueSeries( this );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Dollars (Millions)&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Enterprise Value (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Dollars (Millions)</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Market Capitalization (ttm) is greater than a Value</Name>
+    <Description>Market Capitalization (millions of dollars) for the trailing 12 months (ttm) is calculated by multiplying the company's stock price by the number of common shares outstanding. For example: 12345.67 = 12 billion, 345 million, 67 thousand dollars</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.MarketCapSeries( this );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Dollars (Millions)&gt;) &gt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Market Capitalization (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Dollars (Millions)</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Market Capitalization (ttm) is less than a Value</Name>
+    <Description>Market Capitalization (millions of dollars) for the trailing 12 months (ttm) is calculated by multiplying the company's stock price by the number of common shares outstanding. For example: 12345.67 = 12 billion, 345 million, 67 thousand dollars</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.MarketCapSeries( this );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar].CompareTo(&lt;#Dollars (Millions)&gt;) &lt; 0 )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "Market Capitalization (ttm)";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>85f8b41e-5261-4503-9737-1b9466b1654c</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Dollars (Millions)</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Growth Rate (year over year) is above a Pct</Name>
+    <Description>Growth rate is expressed as percentage growth with respect to the specified number of Years ago. For example: 10 = 10% growth year over year. Valid Fundamentals: Cash Flow, Earnings, and Sales. </Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.GrowthRateSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), &lt;#Years&gt;, true );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar] &gt; &lt;#Growth Rate (Pct)&gt; )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; Growth Rate over " + &lt;#Years&gt;.ToString() + " years";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>fb1557df-be6c-484c-bc91-70a26ccc3d9a</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Years</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Growth Rate (Pct)</Name>
+        <Value>0</Value>
+        <DefaultValue>0</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Cash Flow</Value>
+        <DefaultValue>Cash Flow;Earnings;Sales;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Growth Rate (year over year) is below a Pct</Name>
+    <Description>Growth rate is expressed as percentage growth with respect to the specified number of Years ago. For example: 10 = 10% growth year over year. Valid Fundamentals: Cash Flow, Earnings, and Sales. </Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsRatio&gt; = FundamentalsRatio.GrowthRateSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), &lt;#Years&gt;, true );
+</Init>
+    <Body>if( &lt;#dsRatio&gt;[bar] &lt; &lt;#Growth Rate (Pct)&gt; )
+</Body>
+    <Plotting>&lt;#dsRatio&gt;.Description = "&lt;#Fundamental&gt; Growth Rate over " + &lt;#Years&gt;.ToString() + " years";
+ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsRatio&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>fb1557df-be6c-484c-bc91-70a26ccc3d9a</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Years</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Growth Rate (Pct)</Name>
+        <Value>0</Value>
+        <DefaultValue>0</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Cash Flow</Value>
+        <DefaultValue>Cash Flow;Earnings;Sales;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsRatio</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Consecutive Quarters of Growth Rate above a Pct</Name>
+    <Description>Enter the number of Consecutive Qtrs required whose growth is above the target specified for Growth Rate (Pct). Valid Fundamentals: Cash Flow, Earnings, and Sales.  Growth is relative to "Quarters-ago" cash flow. Growth Rate (Pct) can be a positive or negative number. For example, to trigger a trade when 3 (or more) consecutive quarters of at least 23.4% growth have occurred with respect to the same fiscal quarter last year, use Consecutive Qtrs = 3, Growth Rate (Pct) = 23.4, and Quarters = 4.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsCPG&gt; = FundamentalsRatio.ConsecutiveGrowthSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), &lt;#Quarters&gt;, &lt;#Growth Rate (Pct)&gt;, true, false );
+&lt;#dsCPG&gt;.Description = "Consecutive quarters of &lt;#Fundamental&gt; Growth above " + &lt;#Growth Rate (Pct)&gt; + "% for " + &lt;#Quarters&gt;.ToString() + " quarters";
+</Init>
+    <Body>if( &lt;#dsCPG&gt;[bar] &gt;= &lt;#Consecutive Qtrs&gt; )
+</Body>
+    <Plotting>ChartPane &lt;#paneCPG&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneCPG&gt;, &lt;#dsCPG&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>fb1557df-be6c-484c-bc91-70a26ccc3d9a</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Quarters</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Growth Rate (Pct)</Name>
+        <Value>0</Value>
+        <DefaultValue>0</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Cash Flow</Value>
+        <DefaultValue>Cash Flow;Earnings;Sales;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Consecutive Qtrs</Name>
+        <Value>2</Value>
+        <DefaultValue>2</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>paneCPG</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsCPG</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Consecutive Quarters of Growth Rate below a Pct</Name>
+    <Description>Enter the number of Consecutive Qtrs required whose growth is below the target specified for Growth Rate (Pct). Valid Fundamentals: Cash Flow, Earnings, and Sales.  Growth is relative to "Quarters-ago" cash flow. Growth Rate (Pct) can be a positive or negative number. For example, to trigger a trade when 3 (or more) consecutive quarters of less than 23.4% growth have occurred with respect to the same fiscal quarter last year, use Consecutive Qtrs = 3, Growth Rate (Pct) = 23.4, and Quarters = 4.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsCPG&gt; = FundamentalsRatio.ConsecutiveGrowthSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), &lt;#Quarters&gt;, &lt;#Growth Rate (Pct)&gt;, false, false );
+&lt;#dsCPG&gt;.Description = "Consecutive quarters of &lt;#Fundamental&gt; Growth under " + &lt;#Growth Rate (Pct)&gt; + "% for " + &lt;#Quarters&gt;.ToString() + " quarters";
+</Init>
+    <Body>if( &lt;#dsCPG&gt;[bar] &gt;= &lt;#Consecutive Qtrs&gt; )
+</Body>
+    <Plotting>ChartPane &lt;#paneCPG&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneCPG&gt;, &lt;#dsCPG&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>fb1557df-be6c-484c-bc91-70a26ccc3d9a</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Quarters</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Growth Rate (Pct)</Name>
+        <Value>0</Value>
+        <DefaultValue>0</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Cash Flow</Value>
+        <DefaultValue>Cash Flow;Earnings;Sales;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Consecutive Qtrs</Name>
+        <Value>2</Value>
+        <DefaultValue>2</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>paneCPG</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsCPG</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Consecutive Years of Growth Rate above a Pct</Name>
+    <Description>Enter the number of consecutive years required whose growth is above the target specified for Growth Rate (Pct). Valid Fundamentals: Cash Flow, Earnings, and Sales.  Growth is relative to "Years-ago".  Only full fiscal years are considered. Growth Rate (Pct) can be a positive or negative number. For example, to trigger a trade when 2 (or more) consecutive years of at least 23.4% growth have occurred with respect to the previous fiscal year, use Consecutive Years = 2, Growth Rate (Pct) = 23.4, and Years = 1.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsCPG&gt; = FundamentalsRatio.ConsecutiveGrowthSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), &lt;#Years&gt;, &lt;#Growth Rate (Pct)&gt;, true, true );
+&lt;#dsCPG&gt;.Description = "Consecutive years of &lt;#Fundamental&gt; Growth above " + &lt;#Growth Rate (Pct)&gt; + "% for " + &lt;#Years&gt;.ToString() + " years";
+</Init>
+    <Body>if( &lt;#dsCPG&gt;[bar] &gt;= &lt;#Consecutive Years&gt; )
+</Body>
+    <Plotting>ChartPane &lt;#paneCPG&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneCPG&gt;, &lt;#dsCPG&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>fb1557df-be6c-484c-bc91-70a26ccc3d9a</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Years</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Growth Rate (Pct)</Name>
+        <Value>0</Value>
+        <DefaultValue>0</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Cash Flow</Value>
+        <DefaultValue>Cash Flow;Earnings;Sales;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Consecutive Years</Name>
+        <Value>2</Value>
+        <DefaultValue>2</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>paneCPG</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsCPG</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Consecutive Years of Growth Rate below a Pct</Name>
+    <Description>Enter the number of consecutive years required whose growth is below the target specified for Growth Rate (Pct). Valid Fundamentals: Cash Flow, Earnings, and Sales. Growth is relative to "Years-ago".  Only full fiscal years are considered. Growth Rate (Pct) can be a positive or negative number. For example, to trigger a trade when 2 (or more) consecutive years of less than 23.4% growth have occurred with respect to the previous fiscal year, use Consecutive Years = 2, Growth Rate (Pct) = 23.4, and Years = 1.</Description>
+    <Category>Fundamental Ratios</Category>
+    <Init>DataSeries &lt;#dsCPG&gt; = FundamentalsRatio.ConsecutiveGrowthSeries( this, FundamentalsRatio.ConvertName("&lt;#Fundamental&gt;"), &lt;#Years&gt;, &lt;#Growth Rate (Pct)&gt;, false, true );
+&lt;#dsCPG&gt;.Description = "Consecutive years of &lt;#Fundamental&gt; Growth under " + &lt;#Growth Rate (Pct)&gt; + "% for " + &lt;#Years&gt;.ToString() + " years";
+</Init>
+    <Body>if( &lt;#dsCPG&gt;[bar] &gt;= &lt;#Consecutive Years&gt; )
+</Body>
+    <Plotting>ChartPane &lt;#paneCPG&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneCPG&gt;, &lt;#dsCPG&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>fb1557df-be6c-484c-bc91-70a26ccc3d9a</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Years</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Growth Rate (Pct)</Name>
+        <Value>0</Value>
+        <DefaultValue>0</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Fundamental</Name>
+        <Value>Cash Flow</Value>
+        <DefaultValue>Cash Flow;Earnings;Sales;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Consecutive Years</Name>
+        <Value>2</Value>
+        <DefaultValue>2</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>paneCPG</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsCPG</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Fundamental Item per Share is above a Value</Name>
+    <Description>Occurs when a Fundamental Item per Share for the most-recent quarter (mrq) is above an entered value. Although this can be applied to any fundamental item, it makes the most sense for balance sheet or income statement items.</Description>
+    <Category>General Fundamentals</Category>
+    <Init>DataSeries &lt;#dsItem&gt; = FundamentalDataSeries( &lt;#Fundamental Item&gt; );
+DataSeries &lt;#dsShares&gt; = FundamentalDataSeries( "common shares outstanding" );
+DataSeries &lt;#dsAdj&gt; = FundamentalDataSeries( "adjustment factor" );
+DataSeries &lt;#dsItemPerShare&gt; = &lt;#dsItem&gt; / (&lt;#dsShares&gt; * &lt;#dsAdj&gt;);
+</Init>
+    <Body>if( &lt;#dsItemPerShare&gt;[bar] &gt; &lt;#Value&gt; )
+</Body>
+    <Plotting>ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsItemPerShare&gt;, Color.Purple, LineStyle.Solid, 1);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>002ca36b-9120-46ba-ba51-e5064da86df9</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental Item</Name>
+        <Value>[Click here to select a Fundamental Item]</Value>
+        <DefaultValue>[Click here to select a Fundamental Item]</DefaultValue>
+        <ParamType>Fundamental</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsItem</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsShares</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsItemPerShare</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsAdj</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause />
+  </Rule>
+  <Rule>
+    <Name>Fundamental Item per Share is below a Value</Name>
+    <Description>Occurs when a Fundamental Item per Share for the most-recent quarter (mrq) is below an entered value. Although this can be applied to any fundamental item, it makes the most sense for balance sheet or income statement items.</Description>
+    <Category>General Fundamentals</Category>
+    <Init>DataSeries &lt;#dsItem&gt; = FundamentalDataSeries( &lt;#Fundamental Item&gt; );
+DataSeries &lt;#dsShares&gt; = FundamentalDataSeries( "common shares outstanding" );
+DataSeries &lt;#dsAdj&gt; = FundamentalDataSeries( "adjustment factor" );
+DataSeries &lt;#dsItemPerShare&gt; = &lt;#dsItem&gt; / (&lt;#dsShares&gt; * &lt;#dsAdj&gt;);
+</Init>
+    <Body>if( &lt;#dsItemPerShare&gt;[bar] &lt; &lt;#Value&gt; )
+</Body>
+    <Plotting>ChartPane &lt;#paneRatio&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneRatio&gt;, &lt;#dsItemPerShare&gt;, Color.Purple, LineStyle.Solid, 1);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>002ca36b-9120-46ba-ba51-e5064da86df9</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Fundamental Item</Name>
+        <Value>[Click here to select a Fundamental Item]</Value>
+        <DefaultValue>[Click here to select a Fundamental Item]</DefaultValue>
+        <ParamType>Fundamental</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsItem</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsShares</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsItemPerShare</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneRatio</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsAdj</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause />
+  </Rule>
+</ArrayOfRule>

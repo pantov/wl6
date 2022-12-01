@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<Strategy xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>test1</Name>
+  <ID>afe64832-6bfa-4fa1-8306-c21e63cd3a83</ID>
+  <Code>using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Drawing;
+using WealthLab;
+using WealthLab.Indicators;
+using System.Text.RegularExpressions;
+using System.Globalization;
+//using System.Management;
+
+namespace WealthLab.Strategies
+{
+	
+ 
+	public class MyStrategy : WealthScript
+	{
+
+		private static readonly Regex _optionNameRegex = new Regex(@"(?&lt;code&gt;\w+-[0-9]{1,2}\.[0-9]{1,2})(?&lt;isMargin&gt;[M_])(?&lt;expiryDate&gt;[0-9]{6,6})(?&lt;optionType&gt;[CP])(?&lt;region&gt;\w)\s(?&lt;strike&gt;\d*\.*\d*)", RegexOptions.Compiled);
+
+		public class sec
+		{
+			//		public string secname { get; set; }
+		
+			//	private WealthScript _a;
+			public string secname;
+			public string SecurityName;
+			public decimal Strike;
+			public string OptionType;
+			public DateTime ExpiryDate;
+			public string code;
+			//	public Bars bars2;
+			public Bars bars;
+			
+			public sec(string name)
+			{
+				this.secname = name;
+				//	bars2 = _a.GetExternalSymbol(name, true);
+			}
+			public void GetOptionInfo()
+			{
+				var matches = _optionNameRegex.Matches(this.SecurityName);
+
+				//	if (matches.Count != 1)
+				//		return null;
+
+				var groups = matches[0].Groups;
+
+				if (groups.Count == 7)
+				{
+					
+					this.code = groups["code"].Value;
+					this.ExpiryDate = Convert.ToDateTime(DateTime.ParseExact(groups["expiryDate"].Value, "ddMMyy", CultureInfo.InvariantCulture));
+					//	this.ExpiryDate = groups["expiryDate"].Value.ToDateTime("ddMMyy").ApplyTimeZone(board.Exchange.TimeZoneInfo);
+					this.OptionType = groups["optionType"].Value == "C" ? "Call" : "Put";
+					this.Strike = decimal.Parse(groups["strike"].Value, CultureInfo.InvariantCulture);
+						
+				}
+
+				//	return null;
+			}
+	
+		}
+		public sec opt_Ri1;
+		public sec opt_Ri2;
+		
+		public sec Create_sec(string name) 
+		{
+			var opt_tmp = new sec(name);
+			Bars bars_tmp = GetExternalSymbol(name, true);
+			PrintDebug("Sec: "+ name+ " Bars count: "+ bars_tmp.Count);
+			opt_tmp.SecurityName = bars_tmp.SecurityName;
+			opt_tmp.GetOptionInfo();
+			opt_tmp.bars = bars_tmp;
+			return opt_tmp;
+		}
+		
+
+		
+		protected override void Execute()
+		{
+			ClearDebug();
+			
+			//	opt_Ri2 = PlotBenchMark("SiZ7");
+			opt_Ri2 = Create_sec("RI95000BL6");
+			sec opt_Ri3 = Create_sec("Si60000BL6");
+			
+			opt_Ri1 = new sec("RI115000BL6");
+			Bars bars1 = GetExternalSymbol(opt_Ri1.secname, true);
+			opt_Ri1.bars = bars1;
+			//	opt_Ri1.secname = "oo";
+
+			HideVolume(); // метод, позволяющий скрыть область объемов на графике.
+			
+			ChartPane changePane = CreatePane(40, true, true);
+			ChartPane UsdPane = CreatePane(40, true, true);
+			
+			DataSeries random = Close - Close;
+			
+			DataSeries rts_rub = new DataSeries(Bars, "Инициированная нулями, заполненная");
+			
+			
+			Bars UsdBars = GetExternalSymbol("usd", true); //получаем бары usd
+		
+			DataSeries usd = Close * UsdBars.Close/50;
+			
+			DateTime dt = new DateTime(2017, 04, 11);
+			
+			
+			//PrintDebug("Номер первого внутридневного бара для даты 16 февраля 2012 года равен" + Bars.ConvertDateToBar(dt, false));
+			
+			PrintDebug(opt_Ri3.SecurityName);
+			PrintDebug(opt_Ri3.OptionType);
+			PrintDebug(opt_Ri3.Strike);
+			PrintDebug(opt_Ri3.ExpiryDate);
+			PrintDebug(opt_Ri3.code);
+			
+			DateTime date1 = new DateTime();
+			//	date1 =  opt_Ri3.ExpiryDate.ToDateTime("ddMMyy");
+			//	date1 =  Convert.ToDateTime(DateTime.ParseExact(opt_Ri3.ExpiryDate, "ddMMyy", CultureInfo.InvariantCulture));
+			//	PrintDebug(date1);
+			
+			var startdate  = Bars.ConvertDateToBar(dt, false);
+			for (int bar = 0; bar &lt; Bars.Count; bar++)
+			{
+			
+				//	if (timecount &gt;1015 &amp;&amp; timecount &lt; 1200)
+				UsdPane.SetBackgroundColor( bar, Color.FromArgb(30,Color.Blue) );
+
+				rts_rub[bar] = Close[bar] * UsdBars.Close[bar]/50;;
+			}
+			
+			
+			DataSeries typPrice = (High + Low + Close) / 3;
+			typPrice.Description = "Typical Price";
+			
+			PlotSeries(changePane, typPrice, Color.Red, LineStyle.Solid, 2);
+			
+			DataSeries avgPrice = (High + Low) / 2;
+			avgPrice.Description = "Average Price";
+			PlotSeries(PricePane, usd, Color.Blue, WealthLab.LineStyle.Solid, 1);
+			
+			//	PlotSymbol(UsdPane, opt_Ri1.bars.Open, Color.LightGreen, Color.Black);
+			
+			PlotSeries(UsdPane, opt_Ri2.bars.Open, Color.Green, LineStyle.Solid,1);
+			PlotSeries(UsdPane, opt_Ri3.bars.Open, Color.Red, LineStyle.Solid,1);
+			//	DrawHorzLine(UsdPane, 100000, Color.Blue, LineStyle.Solid, 1);
+			
+		}
+	}
+}</Code>
+  <Description />
+  <Author>Local</Author>
+  <CreationDate>2017-04-29T12:10:07.5941436+03:00</CreationDate>
+  <LastModified>2017-04-29T12:10:07.6097158+03:00</LastModified>
+  <StrategyType>Script</StrategyType>
+  <AccountNumber />
+  <NetworkDrivePath />
+  <ParameterValues />
+  <DataSetName>mfd</DataSetName>
+  <Symbol>RIZ6</Symbol>
+  <DataScale>
+    <Scale>Minute</Scale>
+    <BarInterval>10</BarInterval>
+  </DataScale>
+  <PositionSize>
+    <Mode>RawProfitDollar</Mode>
+    <RawProfitDollarSize>5000</RawProfitDollarSize>
+    <RawProfitShareSize>100</RawProfitShareSize>
+    <StartingCapital>100000</StartingCapital>
+    <DollarSize>5000</DollarSize>
+    <ShareSize>100</ShareSize>
+    <PctSize>10</PctSize>
+    <RiskSize>3</RiskSize>
+    <SimuScriptName />
+    <PosSizerConfig />
+    <MarginFactor>1</MarginFactor>
+    <OverrideShareSize>0</OverrideShareSize>
+  </PositionSize>
+  <DataRange>
+    <Range>AllData</Range>
+    <StartDate>2012-04-23T00:00:00</StartDate>
+    <EndDate>2017-04-23T00:00:00</EndDate>
+    <FixedBars>500</FixedBars>
+    <RecentValue>10</RecentValue>
+    <IsStreaming>false</IsStreaming>
+  </DataRange>
+  <Indicators>AAAAAAAAAAA=</Indicators>
+  <Rules />
+  <SinglePosition>true</SinglePosition>
+  <References />
+  <PreferredValues />
+  <UsePreferredValues>false</UsePreferredValues>
+  <StartingEquity>100000</StartingEquity>
+  <MarginFactor>1</MarginFactor>
+  <PanelSize />
+  <Origin />
+  <CombinedStrategyChildren />
+</Strategy>

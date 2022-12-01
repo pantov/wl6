@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<DataSet xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>Dow 30</Name>
+  <Scale>Daily</Scale>
+  <BarInterval>0</BarInterval>
+  <DSString>AAPL,AXP,BA,CAT,CSCO,CVX,DD,DIS,GE,GS,HD,IBM,INTC,JNJ,JPM,KO,MCD,MMM,MRK,MSFT,NKE,PFE,PG,TRV,UNH,UTX,V,VZ,WMT,XOM,</DSString>
+  <ProviderName>FidelityStaticProvider</ProviderName>
+</DataSet>

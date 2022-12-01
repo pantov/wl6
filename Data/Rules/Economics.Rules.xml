@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfRule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Rule>
+    <Name>Economic Indicator is above a Value</Name>
+    <Description>Occurs when the reported value of the economic indicator is above a specified value.</Description>
+    <Category>Economic Indicators</Category>
+    <Init>DataSeries &lt;#dsEI&gt; = FundamentalsRatio.FundamentalSeries( this, "&lt;#Economic Indicator&gt;", false );
+</Init>
+    <Body>if( &lt;#dsEI&gt;[bar] &gt; &lt;#Value&gt; )
+</Body>
+    <Plotting>ChartPane &lt;#paneEI&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneEI&gt;, &lt;#dsEI&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>174f7463-53e6-48ab-b701-565a30a846a9</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Economic Indicator</Name>
+        <Value>cpi</Value>
+        <DefaultValue>cpi;capacity utilization;consumer confidence;core cpi;core ppi;existing home sales;gdp-forecast;gdp;housing starts;ism index;initial jobless claims;michigan sentiment-final;new home sales;non-farm payroll;ppi;personal spending;retail sales (excl autos);retail sales;trade balance;unemployment rate;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsEI</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneEI</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Economic Indicator is below a Value</Name>
+    <Description>Occurs when the reported value of the economic indicator is below a specified value.</Description>
+    <Category>Economic Indicators</Category>
+    <Init>DataSeries &lt;#dsEI&gt; = FundamentalsRatio.FundamentalSeries( this, "&lt;#Economic Indicator&gt;", false );
+</Init>
+    <Body>if( &lt;#dsEI&gt;[bar] &lt; &lt;#Value&gt; )
+</Body>
+    <Plotting>ChartPane &lt;#paneEI&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneEI&gt;, &lt;#dsEI&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>174f7463-53e6-48ab-b701-565a30a846a9</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Economic Indicator</Name>
+        <Value>cpi</Value>
+        <DefaultValue>cpi;capacity utilization;consumer confidence;core cpi;core ppi;existing home sales;gdp-forecast;gdp;housing starts;ism index;initial jobless claims;michigan sentiment-final;new home sales;non-farm payroll;ppi;personal spending;retail sales (excl autos);retail sales;trade balance;unemployment rate;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsEI</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneEI</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Economic Indicator is above its Moving Average</Name>
+    <Description>Occurs when the reported value of the economic indicator is above a specified value.</Description>
+    <Category>Economic Indicators</Category>
+    <Init>DataSeries &lt;#dsEI&gt; = FundamentalsRatio.FundamentalSeries( this, "&lt;#Economic Indicator&gt;", false );
+DataSeries &lt;#dsEIMA&gt; = FundamentalDataSeries( "&lt;#Economic Indicator&gt;", &lt;#Moving Average Period&gt;, true, 0);
+</Init>
+    <Body>if( &lt;#dsEI&gt;[bar] &gt; &lt;#dsEIMA&gt;[bar] )
+</Body>
+    <Plotting>ChartPane &lt;#paneEI&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneEI&gt;, &lt;#dsEI&gt;, Color.Purple, LineStyle.Histogram, 50);
+PlotSeries(&lt;#paneEI&gt;, &lt;#dsEIMA&gt;, Color.CadetBlue, LineStyle.Solid, 2);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>174f7463-53e6-48ab-b701-565a30a846a9</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Economic Indicator</Name>
+        <Value>cpi</Value>
+        <DefaultValue>cpi;capacity utilization;consumer confidence;core cpi;core ppi;existing home sales;gdp-forecast;gdp;housing starts;ism index;initial jobless claims;michigan sentiment-final;new home sales;non-farm payroll;ppi;personal spending;retail sales (excl autos);retail sales;trade balance;unemployment rate;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Moving Average Period</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsEI</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneEI</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsEIMA</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Economic Indicator is equal to a Value</Name>
+    <Description>Occurs when the reported value of the economic indicator is equal to a specified value.</Description>
+    <Category>Economic Indicators</Category>
+    <Init>DataSeries &lt;#dsEI&gt; = FundamentalsRatio.FundamentalSeries( this, "&lt;#Economic Indicator&gt;", false );
+</Init>
+    <Body>if( &lt;#dsEI&gt;[bar] == &lt;#Value&gt; )
+</Body>
+    <Plotting>ChartPane &lt;#paneEI&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneEI&gt;, &lt;#dsEI&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>174f7463-53e6-48ab-b701-565a30a846a9</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Economic Indicator</Name>
+        <Value>cpi</Value>
+        <DefaultValue>cpi;capacity utilization;consumer confidence;core cpi;core ppi;existing home sales;gdp-forecast;gdp;housing starts;ism index;initial jobless claims;michigan sentiment-final;new home sales;non-farm payroll;ppi;personal spending;retail sales (excl autos);retail sales;trade balance;unemployment rate;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Value</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsEI</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneEI</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Economic Indicator is below its Moving Average</Name>
+    <Description>Occurs when the reported value of the economic indicator is below a specified value.</Description>
+    <Category>Economic Indicators</Category>
+    <Init>DataSeries &lt;#dsEI&gt; = FundamentalsRatio.FundamentalSeries( this, "&lt;#Economic Indicator&gt;", false );
+DataSeries &lt;#dsEIMA&gt; = FundamentalDataSeries( "&lt;#Economic Indicator&gt;", &lt;#Moving Average Period&gt;, true, 0);
+</Init>
+    <Body>if( &lt;#dsEI&gt;[bar] &lt; &lt;#dsEIMA&gt;[bar] )
+</Body>
+    <Plotting>ChartPane &lt;#paneEI&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneEI&gt;, &lt;#dsEI&gt;, Color.Purple, LineStyle.Histogram, 50);
+PlotSeries(&lt;#paneEI&gt;, &lt;#dsEIMA&gt;, Color.CadetBlue, LineStyle.Solid, 2);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>174f7463-53e6-48ab-b701-565a30a846a9</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Economic Indicator</Name>
+        <Value>cpi</Value>
+        <DefaultValue>cpi;capacity utilization;consumer confidence;core cpi;core ppi;existing home sales;gdp-forecast;gdp;housing starts;ism index;initial jobless claims;michigan sentiment-final;new home sales;non-farm payroll;ppi;personal spending;retail sales (excl autos);retail sales;trade balance;unemployment rate;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Moving Average Period</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsEI</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneEI</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>dsEIMA</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Economic Indicator Period over Period is above a Percent</Name>
+    <Description>Occurs when the growth rate for an economic indicator over that economic indicator at a prior period is greater than a specified percent value.</Description>
+    <Category>Economic Indicators</Category>
+    <Init>DataSeries &lt;#dsEI&gt; = FundamentalsRatio.GrowthRateSeries( this, "&lt;#Economic Indicator&gt;", &lt;#Periods&gt;, false );
+&lt;#dsEI&gt;.Description = "&lt;#Economic Indicator&gt; Growth Rate over " + &lt;#Periods&gt;.ToString() + " periods";
+</Init>
+    <Body>if( &lt;#dsEI&gt;[bar] &gt; &lt;#Change Rate (Pct)&gt; )
+</Body>
+    <Plotting>ChartPane &lt;#paneEI&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneEI&gt;, &lt;#dsEI&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>174f7463-53e6-48ab-b701-565a30a846a9</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Economic Indicator</Name>
+        <Value>cpi</Value>
+        <DefaultValue>cpi;capacity utilization;consumer confidence;core cpi;core ppi;existing home sales;gdp-forecast;gdp;housing starts;ism index;initial jobless claims;michigan sentiment-final;new home sales;non-farm payroll;ppi;personal spending;retail sales (excl autos);retail sales;trade balance;unemployment rate;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Change Rate (Pct)</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>1000</Stop>
+        <Step>10</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Periods</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsEI</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneEI</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Economic Indicator Period over Period is below a Percent</Name>
+    <Description>Occurs when the growth rate for an economic indicator over that economic indicator at a prior period is less than a specified percent value.</Description>
+    <Category>Economic Indicators</Category>
+    <Init>DataSeries &lt;#dsEI&gt; = FundamentalsRatio.GrowthRateSeries( this, "&lt;#Economic Indicator&gt;", &lt;#Periods&gt;, false );
+&lt;#dsEI&gt;.Description = "&lt;#Economic Indicator&gt; Growth Rate over " + &lt;#Periods&gt;.ToString() + " periods";
+</Init>
+    <Body>if( &lt;#dsEI&gt;[bar] &lt; &lt;#Change Rate (Pct)&gt; )
+</Body>
+    <Plotting>ChartPane &lt;#paneEI&gt; = CreatePane(50, true, false);
+PlotSeries(&lt;#paneEI&gt;, &lt;#dsEI&gt;, Color.Purple, LineStyle.Histogram, 50);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>174f7463-53e6-48ab-b701-565a30a846a9</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Economic Indicator</Name>
+        <Value>cpi</Value>
+        <DefaultValue>cpi;capacity utilization;consumer confidence;core cpi;core ppi;existing home sales;gdp-forecast;gdp;housing starts;ism index;initial jobless claims;michigan sentiment-final;new home sales;non-farm payroll;ppi;personal spending;retail sales (excl autos);retail sales;trade balance;unemployment rate;</DefaultValue>
+        <ParamType>ListOfStrings</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Change Rate (Pct)</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>1000</Stop>
+        <Step>10</Step>
+        <Decoration />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Periods</Name>
+        <Value>1</Value>
+        <DefaultValue>1</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>dsEI</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>paneEI</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+</ArrayOfRule>

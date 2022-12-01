@@ -1,0 +1,8 @@
+﻿<?xml version="1.0"?>
+<DataSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Market Sentiment</Name>
+  <Scale>Daily</Scale>
+  <BarInterval>0</BarInterval>
+  <DSString>.MB_ADV.A,.MB_ADV.N,.MB_ADV.Q,.MB_DEC.A,.MB_DEC.N,.MB_DEC.Q,.MB_NH.A,.MB_NH.N,.MB_NH.Q,.MB_NL.A,.MB_NL.N,.MB_NL.Q,.MB_TV.A,.MB_TV.N,.MB_TV.Q,.MB_UNC.A,.MB_UNC.N,.MB_UNC.Q,.STI.A,.STI.N,.STI.O,</DSString>
+  <ProviderName>FidelityStaticProvider</ProviderName>
+</DataSet>

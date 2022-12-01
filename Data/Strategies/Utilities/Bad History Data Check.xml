@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<Strategy xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Bad History Data Check</Name>
+  <ID>8e82b55f-abca-483b-a675-415ec4f098c4</ID>
+  <Code>using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Drawing;
+using WealthLab;
+using WealthLab.Indicators;
+
+namespace WealthLab.Strategies
+{
+	public class BadHistoryDataCheck : WealthScript
+	{
+		protected override void Execute()
+		{
+			ClearDebug();
+			int badBars = 0;
+			int gapDays = 3;
+			if (Bars.Scale == BarScale.Daily)
+				gapDays = 4;
+			DateTime unscheduledClosure1 = new DateTime(2007,1,3);
+			DateTime unscheduledClosure2 = new DateTime(2001,9,17); 
+			
+			for(int bar = 0; bar &lt; Bars.Count; bar++)
+			{
+				//Check for bars on Saturday or Sunday
+				if (Bars.Date[bar].DayOfWeek == DayOfWeek.Saturday || Bars.Date[bar].DayOfWeek == DayOfWeek.Sunday)
+				{
+					badBars++;
+					PrintDebug("Weekend bar: " + Date[bar] + " bar " + bar);
+				}
+				
+				//Check for duplicate dates
+				if (bar &gt; 0)
+					if (Date[bar] == Date[bar - 1])
+					{
+						badBars++;
+						PrintDebug("Duplicate date: " + Date[bar] + " bar " + bar);
+					}
+				
+				//Check for open or close outside high/low range
+				if (Open[bar] &lt; Low[bar])
+				{
+					badBars++;
+					PrintDebug("Open &lt; Low: " + Date[bar] + " bar " + bar);
+				}
+				if (Open[bar] &gt; High[bar])
+				{
+					badBars++;
+					PrintDebug("Open &gt; High: " + Date[bar] + " bar " + bar);
+				}
+				if (Close[bar] &lt; Low[bar])
+				{
+					badBars++;
+					PrintDebug("Close &lt; Low: " + Date[bar] + " bar " + bar);
+				}
+				if (Close[bar] &gt; High[bar])
+				{
+					badBars++;
+					PrintDebug("Close &gt; High: " + Date[bar] + " bar " + bar);
+				}
+				
+				//Out of sequence dates
+				if (bar &gt; 0 &amp;&amp; Date[bar] &lt; Date[bar-1])
+				{
+					PrintDebug("Out of sequence date at bar " + bar);
+					PrintDebug(String.Format( "{0:yyyyMMdd HHmm }", Date[bar-2]));
+					PrintDebug(String.Format( "{0:yyyyMMdd HHmm }", Date[bar-1]));
+					PrintDebug(String.Format( "{0:yyyyMMdd HHmm }", Date[bar]));
+					PrintDebug("");
+					badBars++;
+				}
+				
+				//Gap of more than 3 days
+				if (bar &gt; 0 &amp;&amp; Date[bar].Date != Date[bar - 1].Date)
+				{
+					TimeSpan ts = Date[bar] - Date[bar - 1];
+					int days = ts.Days;
+					if (days &gt; gapDays &amp;&amp; Date[bar].Date != unscheduledClosure1.Date &amp;&amp; Date[bar].Date != unscheduledClosure2.Date)
+					{
+						PrintDebug("Gap of " + days + " days in data at bar " + bar + " (" + Date[bar].Date + ")");
+						badBars++;
+					}
+				}
+			}
+			string msg = badBars + " bad bars for " + Bars.Symbol;
+			PrintStatusBar(msg);
+			PrintDebug(msg);
+			PrintDebug("-----");
+		}
+	}
+}</Code>
+  <Description>&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta http-equiv="Content-Language" content="en-us"&gt;
+			&lt;meta name="GENERATOR" content="Microsoft FrontPage 5.0"&gt;
+				&lt;meta name="ProgId" content="FrontPage.Editor.Document"&gt;
+					&lt;meta http-equiv="Content-Type" content="text/html; charset=windows-1252"&gt;
+						&lt;title&gt;BuyAtMarket&lt;/title&gt;
+						&lt;style&gt;
+							&lt;!--
+							body         { font-family: Tahoma; font-size: 8pt }
+							h1           { font-family: Tahoma; font-size: 12pt; font-weight: bold }
+							h2           { font-family: Tahoma; font-size: 10pt; font-weight: bold }
+							--&gt;
+							&lt;/style&gt;
+						&lt;/head&gt;
+					&lt;h1&gt;&lt;font face="Verdana" size="2"&gt;Bad History Data Check&lt;/font&gt;&lt;/h1&gt;
+					&lt;p class="MsoNormal"&gt;&lt;font size="2"&gt;&lt;span style="font-family: Verdana"&gt;Use 
+								this Strategy to check your historical data for problems.&amp;nbsp; The Strategy 
+								writes its report to the &amp;quot;Debug window&amp;quot;.&amp;nbsp; View the Debug window by 
+								selecting it from the &amp;quot;Tools&amp;quot; menu.&amp;nbsp; The Strategy looks for the 
+								following problems in your data:&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;
+					&lt;ol&gt;
+						&lt;li&gt;
+							&lt;p class="MsoNormal"&gt;&lt;font size="2"&gt;&lt;span style="font-family: Verdana"&gt;
+										Bars that fall on Saturdays or Sundays&lt;/span&gt;&lt;/font&gt;&lt;/li&gt;
+							&lt;li&gt;
+								&lt;p class="MsoNormal"&gt;&lt;font size="2"&gt;&lt;span style="font-family: Verdana"&gt;
+											Duplicate dates&lt;/span&gt;&lt;/font&gt;&lt;/li&gt;
+								&lt;li&gt;
+									&lt;p class="MsoNormal"&gt;&lt;font size="2"&gt;&lt;span style="font-family: Verdana"&gt;
+												Bars where the open or close is less than the low or greater than the high&lt;/span&gt;&lt;/font&gt;&lt;/li&gt;
+									&lt;li&gt;
+										&lt;p class="MsoNormal"&gt;&lt;font size="2"&gt;&lt;span style="font-family: Verdana"&gt;
+													Out of sequence dates&lt;/span&gt;&lt;/font&gt;&lt;/li&gt;
+										&lt;li&gt;
+											&lt;p class="MsoNormal"&gt;&lt;font size="2"&gt;
+													&lt;span style="font-family: Verdana"&gt;Gaps 
+														of more than 3 days in the data&lt;/span&gt;&lt;/font&gt;&lt;/li&gt;
+											&lt;/ol&gt;
+										&lt;p class="MsoNormal"&gt;&lt;font size="2"&gt;&lt;span style="font-family: Verdana"&gt;If 
+													you find any bad data, you can reload the data by right clicking on a chart 
+													and selecting &amp;quot;Reload Chart History&amp;quot; from the popup menu.&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;
+
+
+
+
+										&lt;/html&gt;</Description>
+  <Author>Local</Author>
+  <CreationDate>2007-07-02T15:19:12.3125-05:00</CreationDate>
+  <LastModified>2007-11-28T21:17:03.546875-06:00</LastModified>
+  <StrategyType>Script</StrategyType>
+  <ParameterValues />
+  <DataSetName>High Rollers 5 Minute</DataSetName>
+  <Symbol>C</Symbol>
+  <DataScale>
+    <Scale>Minute</Scale>
+    <BarInterval>5</BarInterval>
+  </DataScale>
+  <PositionSize>
+    <Mode>RawProfitDollar</Mode>
+    <RawProfitDollarSize>50000</RawProfitDollarSize>
+    <RawProfitShareSize>100</RawProfitShareSize>
+    <StartingCapital>100000</StartingCapital>
+    <DollarSize>48000</DollarSize>
+    <ShareSize>100</ShareSize>
+    <PctSize>10</PctSize>
+    <RiskSize>3</RiskSize>
+    <SimuScriptName />
+    <MarginFactor>1</MarginFactor>
+  </PositionSize>
+  <DataRange>
+    <Range>AllData</Range>
+    <StartDate>2006-10-01T00:00:00</StartDate>
+    <EndDate>2007-10-28T00:00:00</EndDate>
+    <FixedBars>2000</FixedBars>
+    <RecentValue>9</RecentValue>
+    <IsStreaming>false</IsStreaming>
+  </DataRange>
+  <Indicators>AAAAAAAAAAA=</Indicators>
+  <Rules />
+  <SinglePosition>true</SinglePosition>
+</Strategy>

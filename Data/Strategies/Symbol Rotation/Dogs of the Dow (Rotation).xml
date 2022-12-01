@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<Strategy xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Dogs of the Dow (Rotation)</Name>
+  <ID>37998055-4390-4fb2-bc7d-843722c9fc41</ID>
+  <Code>using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Drawing;
+using WealthLab;
+using WealthLab.Indicators;
+
+namespace WealthLab.Strategies
+{
+	public class DogsOfTheDow : WealthScript, IComparer&lt;YieldHolder&gt;
+	{
+		private StrategyParameter numberOfDogs;
+		public DogsOfTheDow()
+		{
+			numberOfDogs = CreateParameter("Dogs", 10, 2, 20, 1);
+		}		
+		private DataSeries YieldSeries(string symbol)
+		{			
+			DataSeries yld = CashDividendsPerShareSeries(symbol) / Close;
+			yld.Description = "YieldSeries(" + symbol + ")";
+			return yld;			
+		}		
+		private DataSeries CashDividendsPerShareSeries(string symbol)
+		{		
+			// Aggregate 4 quarters, 0 offset
+			DataSeries dividend = FundamentalDataSeries("cash dividends", 0, 4);			
+			DataSeries cso = FundamentalDataSeries(symbol, "common shares outstanding" );
+			DataSeries af =  FundamentalDataSeries(symbol, "adjustment factor" );
+			DataSeries cdps = dividend / (cso * af);
+			cdps.Description = "CashDividendsPerShare(" + symbol + ")";
+			return cdps;
+		}		
+		protected override void Execute()
+		{			
+			int number = numberOfDogs.ValueInt;			
+			
+			// Show the yield and cdps series for the clicked symbol
+			DataSeries cdps = CashDividendsPerShareSeries(Bars.Symbol);
+			ChartPane cdpsPane = CreatePane(30, true, true);
+			PlotSeries(cdpsPane, cdps, Color.Green, WealthLab.LineStyle.Histogram, 4);			
+			DataSeries yieldSeries = YieldSeries(Bars.Symbol);
+			ChartPane yldPane = CreatePane(30, true, true);
+			PlotSeries(yldPane, yieldSeries, Color.Gray, WealthLab.LineStyle.Histogram, 4);			
+			
+			List&lt;YieldHolder&gt; list = new List&lt;YieldHolder&gt;();
+			
+			for(int bar = 1; bar &lt; Bars.Count; bar++)
+			{
+				DateTime barDate = Date[bar];		
+				bool isFriday = barDate.DayOfWeek == DayOfWeek.Friday;
+				int day = barDate.Day;
+				
+				/* Do the processing on the last trading day of the year */
+				if ( (barDate.Month == 12) &amp; ( (day == 31) || (isFriday &amp; (day &gt;= 29) ) ) )
+				{					
+					PrintStatusBar( "Processing: " + barDate.Year.ToString()  );									
+					/* Load the list with the current yields and sort. Highest yields are at the end of the list. */
+					list.Clear();
+					foreach(string symbol in DataSetSymbols)
+					{
+						SetContext(symbol, true);
+						if (Bars.FirstActualBar &lt; bar)
+						{
+							YieldHolder holder = new YieldHolder();
+							holder.symbol = symbol;
+							holder.yld = YieldSeries(symbol)[bar];
+							list.Add(holder);
+						}
+						RestoreContext();
+					}
+					list.Sort(this);					
+					
+					//remove the lowest yields from the list, leaving the specified number of Dogs
+					int c = list.Count;
+					for(int i = 1; i &lt;= c - number; i++)
+						list.RemoveAt(0);											   
+					
+					// sell all Positions to adjst for equal dollar size Positions and to reinvest dividends
+					SellAtMarket(bar+1, Position.AllPositions);
+					
+					foreach(YieldHolder holder in list)
+					{
+						SetContext(holder.symbol, true);
+						BuyAtMarket(bar + 1, "Yield: " + holder.yld.ToString("0.00%"));
+						RestoreContext();
+					}					
+				}
+			}
+			PrintStatusBar("Complete!");
+		}
+		public int Compare(YieldHolder item1, YieldHolder item2)
+		{
+			return item1.yld.CompareTo(item2.yld);
+		}		
+	}
+	public class YieldHolder
+	{
+		internal string symbol;
+		internal double yld;
+	}	
+}</Code>
+  <Description>&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta http-equiv="Content-Type" content="text/html; charset=windows-1252"&gt;
+			&lt;meta name="GENERATOR" content="Microsoft FrontPage 4.0"&gt;
+				&lt;meta name="ProgId" content="FrontPage.Editor.Document"&gt;
+					&lt;title&gt;Strategy: Dogs of the Dow&lt;/title&gt;
+					&lt;/head&gt;
+
+				&lt;body&gt;
+					&lt;h2&gt;&lt;font size="2"&gt;Dogs of the Dow&lt;/font&gt;&lt;/h2&gt;
+					&lt;p&gt;This "symbol rotation" Strategy simply invests in the 10 highest-dividend yielding stocks from a Dow 30 Industrials
+						at the beginning of each calendar year.&amp;nbsp; When readjusting the Portfolio,
+						the Strategy code sells all stocks first and repurchases if required.&amp;nbsp; Besides
+						simplifying the code, this allows dividends to be effectively reinvested, and it
+						makes it easy to readjust each Position with an equal-dollar size.&lt;/p&gt;
+					&lt;hr&gt;
+
+						&lt;p&gt;&lt;font color="blue"&gt;&lt;b&gt;Usage Notes&lt;/b&gt;&lt;/font&gt;&lt;/p&gt;
+						&lt;ul&gt;
+							&lt;li&gt;&lt;b&gt;Scale: &lt;font color="#0000FF"&gt; Daily&lt;/font&gt;&lt;/b&gt;&lt;/li&gt;
+							&lt;li&gt;&lt;b&gt;Data Range:&lt;/b&gt; &lt;b&gt;&lt;font color="#0000FF"&gt;Most-Recent 6 Years&lt;/font&gt;.&amp;nbsp; &lt;/b&gt;Fidelity Fundamental
+								data is available for 6 years.&lt;/li&gt;
+							&lt;li&gt;&lt;b&gt;Position Size: &lt;font color="#0000FF"&gt; 10% of Equity&lt;/font&gt; &lt;/b&gt;when using the 10 &amp;quot;Dogs&amp;quot; (Positions)
+								default. The number of Dogs may be changed using the Strategy Parameter's
+								slider.  Set Position Sizing accordingly.&amp;nbsp; Set the margin factor
+								slightly higher than 1:1 so that no trades are rejected due to price gaps.&lt;/li&gt;
+							&lt;li&gt;&lt;b&gt;Preferences, Backtest Settings:&lt;/b&gt;&amp;nbsp; &lt;i&gt;Apply Dividends to
+									Backtest Results&lt;/i&gt; .&lt;/li&gt;
+							&lt;li&gt;&lt;b&gt;Preferences, Slippage and Round Lots:&lt;/b&gt;&amp;nbsp; Rounds Lots disabled&amp;nbsp;&lt;/li&gt;
+							&lt;/ul&gt;
+						&lt;p&gt;Run the Strategy by clicking any symbol in the Dow 30 DataSet.. Note that the dividend yield is recorded as the &lt;i&gt;Entry SignalName.&lt;/i&gt; &lt;/p&gt;
+						&lt;hr&gt;
+							&lt;p&gt;&lt;b&gt;Note on historical results&lt;/b&gt;&lt;/p&gt;
+
+							&lt;p&gt;
+
+								This Strategy does not take into account the index component changes over the years.  For example, previously both 'T' (AT&amp;T) and 'SBC' (SBC Communications) were part of the Dow 30, but SBC purchased T in Nov. 2005, and then SBC change their name and symbol to AT&amp;T and 'T', respectively, in Dec. 2005.  That's enough right there to keep an analyst on their toes!  Consequently,
+								the results will clearly differ somewhat with &lt;a href="http://www.dogsofthedow.com/dogyrs.htm"&gt;published historical results&lt;/a&gt; for the &lt;b&gt;Dogs of the Dow&lt;/b&gt; trading system.
+
+								Additionally, for Release 1 Wealth-Lab Pro 5.0 does not have a &amp;quot;Lead Bars&amp;quot;
+								option.  Consequently, performance metrics such as exposure, annualized gain, and Sharpe ratio
+								will be somewhat less than reality since one year of seed data is required to start trading the system.&lt;/p&gt;
+
+							
+
+									&lt;/body&gt;
+								&lt;/html&gt;
+</Description>
+  <Author>Local</Author>
+  <CreationDate>2007-11-08T14:57:51.6875-06:00</CreationDate>
+  <LastModified>2007-12-03T10:23:14.453125-06:00</LastModified>
+  <StrategyType>Script</StrategyType>
+  <ParameterValues />
+  <DataSetName />
+  <Symbol />
+  <DataScale>
+    <Scale>Daily</Scale>
+    <BarInterval>0</BarInterval>
+  </DataScale>
+  <PositionSize>
+    <Mode>RawProfitDollar</Mode>
+    <RawProfitDollarSize>50000</RawProfitDollarSize>
+    <RawProfitShareSize>100</RawProfitShareSize>
+    <StartingCapital>100000</StartingCapital>
+    <DollarSize>48000</DollarSize>
+    <ShareSize>100</ShareSize>
+    <PctSize>10</PctSize>
+    <RiskSize>3</RiskSize>
+    <SimuScriptName />
+    <MarginFactor>1</MarginFactor>
+  </PositionSize>
+  <DataRange>
+    <Range>AllData</Range>
+    <StartDate>2006-10-01T00:00:00</StartDate>
+    <EndDate>2007-10-28T00:00:00</EndDate>
+    <FixedBars>2000</FixedBars>
+    <RecentValue>9</RecentValue>
+    <IsStreaming>false</IsStreaming>
+  </DataRange>
+  <Indicators>AAAAAAAAAAA=</Indicators>
+  <Rules />
+  <SinglePosition>true</SinglePosition>
+</Strategy>

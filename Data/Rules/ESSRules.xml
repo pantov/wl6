@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfRule xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Rule>
+    <Name>ESS is above a Value</Name>
+    <Description>Equity Summary Score is above a Value.</Description>
+    <Category>Equity Summary Score</Category>
+    <Init>DataSeries &lt;#ESSSeries&gt; = FundamentalDataSeries(Bars.Symbol, "equity summary score");
+&lt;#ESSSeries&gt;.Description = "ESS";
+Bars.Cache["ESS"] = &lt;#ESSSeries&gt;;
+</Init>
+    <Body>if (&lt;#ESSSeries&gt;[bar] &gt; &lt;#ESSValue&gt;)
+</Body>
+    <Plotting>//PlotToken=ESS
+ChartPane &lt;#Pane&gt; = &lt;#NewPane&gt;;
+SetPaneMinMax(&lt;#Pane&gt;, 0, 10);
+PlotSeries(&lt;#Pane&gt;, &lt;#ESSSeries&gt;, Color.Black, LineStyle.Solid, 2);
+Color red = Color.FromArgb(64, 204, 0, 0);
+Color orange = Color.FromArgb(64, 126, 33, 33);
+Color grey = Color.FromArgb(64, 153, 153, 153);
+Color yellow = Color.FromArgb(64, 58, 124, 0);
+Color green = Color.FromArgb(64, 153, 170, 0);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, red, LineStyle.Solid, 1, 0, 1);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, orange, LineStyle.Solid, 1, 1, 3);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, grey, LineStyle.Solid, 1, 3, 7);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, yellow, LineStyle.Solid, 1, 7, 9);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, green, LineStyle.Solid, 1, 9, 10);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>7dc1cfec-1c25-4799-9c3e-2e2ff0b50f99</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>ESSValue</Name>
+        <DisplayName>ESSValue</DisplayName>
+        <Value>3</Value>
+        <DefaultValue>3</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+        <ExposeAsSlider>false</ExposeAsSlider>
+        <IndicatorParameterDisplayNames />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>ESSSeries</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>Pane</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause />
+  </Rule>
+  <Rule>
+    <Name>ESS is below a Value</Name>
+    <Description>Equity Summary Score is below a Value.</Description>
+    <Category>Equity Summary Score</Category>
+    <Init>DataSeries &lt;#ESSSeries&gt; = FundamentalDataSeries(Bars.Symbol, "equity summary score");
+&lt;#ESSSeries&gt;.Description = "ESS";
+Bars.Cache["ESS"] = &lt;#ESSSeries&gt;;
+</Init>
+    <Body>if (&lt;#ESSSeries&gt;[bar] &lt; &lt;#ESSValue&gt;)
+</Body>
+    <Plotting>//PlotToken=ESS
+ChartPane &lt;#Pane&gt; = &lt;#NewPane&gt;;
+SetPaneMinMax(&lt;#Pane&gt;, 0, 10);
+PlotSeries(&lt;#Pane&gt;, &lt;#ESSSeries&gt;, Color.Black, LineStyle.Solid, 2);
+Color red = Color.FromArgb(64, 204, 0, 0);
+Color orange = Color.FromArgb(64, 126, 33, 33);
+Color grey = Color.FromArgb(64, 153, 153, 153);
+Color yellow = Color.FromArgb(64, 58, 124, 0);
+Color green = Color.FromArgb(64, 153, 170, 0);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, red, LineStyle.Solid, 1, 0, 1);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, orange, LineStyle.Solid, 1, 1, 3);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, grey, LineStyle.Solid, 1, 3, 7);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, yellow, LineStyle.Solid, 1, 7, 9);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, green, LineStyle.Solid, 1, 9, 10);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>7dc1cfec-1c25-4799-9c3e-2e2ff0b50f99</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>ESSValue</Name>
+        <DisplayName>ESSValue</DisplayName>
+        <Value>3</Value>
+        <DefaultValue>3</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+        <ExposeAsSlider>false</ExposeAsSlider>
+        <IndicatorParameterDisplayNames />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>ESSSeries</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>Pane</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause />
+  </Rule>
+  <Rule>
+    <Name>Change in ESS is above a Value</Name>
+    <Description>Change in Equity Summary Score is above a Value.</Description>
+    <Category>Equity Summary Score</Category>
+    <Init>DataSeries &lt;#ESSSeries&gt; = FundamentalDataSeries(Bars.Symbol, "equity summary score");
+&lt;#ESSSeries&gt;.Description = "ESS";
+Bars.Cache["ESS"] = &lt;#ESSSeries&gt;;
+</Init>
+    <Body>if (&lt;#ESSSeries&gt;[bar] - &lt;#ESSSeries&gt;[bar - &lt;#Lookback&gt;] &gt; &lt;#DeltaValue&gt;)
+</Body>
+    <Plotting>//PlotToken=ESS
+ChartPane &lt;#Pane&gt; = &lt;#NewPane&gt;;
+SetPaneMinMax(&lt;#Pane&gt;, 0, 10);
+PlotSeries(&lt;#Pane&gt;, &lt;#ESSSeries&gt;, Color.Black, LineStyle.Solid, 2);
+Color red = Color.FromArgb(64, 204, 0, 0);
+Color orange = Color.FromArgb(64, 126, 33, 33);
+Color grey = Color.FromArgb(64, 153, 153, 153);
+Color yellow = Color.FromArgb(64, 58, 124, 0);
+Color green = Color.FromArgb(64, 153, 170, 0);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, red, LineStyle.Solid, 1, 0, 1);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, orange, LineStyle.Solid, 1, 1, 3);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, grey, LineStyle.Solid, 1, 3, 7);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, yellow, LineStyle.Solid, 1, 7, 9);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, green, LineStyle.Solid, 1, 9, 10);</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>7dc1cfec-1c25-4799-9c3e-2e2ff0b50f99</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>DeltaValue</Name>
+        <DisplayName>DeltaValue</DisplayName>
+        <Value>0</Value>
+        <DefaultValue>0</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+        <ExposeAsSlider>false</ExposeAsSlider>
+        <IndicatorParameterDisplayNames />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Lookback</Name>
+        <DisplayName>Lookback</DisplayName>
+        <Value>20</Value>
+        <DefaultValue>20</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>10</Start>
+        <Stop>200</Stop>
+        <Step>10</Step>
+        <Decoration />
+        <ExposeAsSlider>false</ExposeAsSlider>
+        <IndicatorParameterDisplayNames />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>ESSSeries</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>Pane</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause />
+  </Rule>
+  <Rule>
+    <Name>Change in ESS is below a Value</Name>
+    <Description>Change in Equity Summary Score is below a Value.</Description>
+    <Category>Equity Summary Score</Category>
+    <Init>DataSeries &lt;#ESSSeries&gt; = FundamentalDataSeries(Bars.Symbol, "equity summary score");
+&lt;#ESSSeries&gt;.Description = "ESS";
+Bars.Cache["ESS"] = &lt;#ESSSeries&gt;;
+</Init>
+    <Body>if (&lt;#ESSSeries&gt;[bar] - &lt;#ESSSeries&gt;[bar - &lt;#Lookback&gt;] &lt; &lt;#DeltaValue&gt;)
+</Body>
+    <Plotting>//PlotToken=ESS
+ChartPane &lt;#Pane&gt; = &lt;#NewPane&gt;;
+SetPaneMinMax(&lt;#Pane&gt;, 0, 10);
+PlotSeries(&lt;#Pane&gt;, &lt;#ESSSeries&gt;, Color.Black, LineStyle.Solid, 2);
+Color red = Color.FromArgb(64, 204, 0, 0);
+Color orange = Color.FromArgb(64, 126, 33, 33);
+Color grey = Color.FromArgb(64, 153, 153, 153);
+Color yellow = Color.FromArgb(64, 58, 124, 0);
+Color green = Color.FromArgb(64, 153, 170, 0);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, red, LineStyle.Solid, 1, 0, 1);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, orange, LineStyle.Solid, 1, 1, 3);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, grey, LineStyle.Solid, 1, 3, 7);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, yellow, LineStyle.Solid, 1, 7, 9);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, green, LineStyle.Solid, 1, 9, 10);</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>7dc1cfec-1c25-4799-9c3e-2e2ff0b50f99</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>DeltaValue</Name>
+        <DisplayName>DeltaValue</DisplayName>
+        <Value>0</Value>
+        <DefaultValue>0</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>0</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+        <ExposeAsSlider>false</ExposeAsSlider>
+        <IndicatorParameterDisplayNames />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Lookback</Name>
+        <DisplayName>Lookback</DisplayName>
+        <Value>20</Value>
+        <DefaultValue>20</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>10</Start>
+        <Stop>200</Stop>
+        <Step>10</Step>
+        <Decoration />
+        <ExposeAsSlider>false</ExposeAsSlider>
+        <IndicatorParameterDisplayNames />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>ESSSeries</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>Pane</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause />
+  </Rule>
+  <Rule>
+    <Name>ESS Firms is above a Value</Name>
+    <Description>Number of Firms in Equity Summary Score is above a Value.</Description>
+    <Category>Equity Summary Score</Category>
+    <Init>DataSeries &lt;#ESSSeries&gt; = FundamentalDataSeries(Bars.Symbol, "equity summary score");
+&lt;#ESSSeries&gt;.Description = "ESS";
+Bars.Cache["ESS"] = &lt;#ESSSeries&gt;;</Init>
+    <Body>FundamentalItem &lt;#ESS&gt; = GetFundamentalItem(bar, Bars.Symbol, "equity summary score");
+if (&lt;#ESS&gt; != null &amp;&amp; Int32.Parse(&lt;#ESS&gt;.GetDetail("firms")) &gt; &lt;#ESSFirms&gt;)
+</Body>
+    <Plotting>//PlotToken=ESS
+ChartPane &lt;#Pane&gt; = &lt;#NewPane&gt;;
+SetPaneMinMax(&lt;#Pane&gt;, 0, 10);
+PlotSeries(&lt;#Pane&gt;, &lt;#ESSSeries&gt;, Color.Black, LineStyle.Solid, 2);
+Color red = Color.FromArgb(64, 204, 0, 0);
+Color orange = Color.FromArgb(64, 126, 33, 33);
+Color grey = Color.FromArgb(64, 153, 153, 153);
+Color yellow = Color.FromArgb(64, 58, 124, 0);
+Color green = Color.FromArgb(64, 153, 170, 0);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, red, LineStyle.Solid, 1, 0, 1);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, orange, LineStyle.Solid, 1, 1, 3);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, grey, LineStyle.Solid, 1, 3, 7);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, yellow, LineStyle.Solid, 1, 7, 9);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, green, LineStyle.Solid, 1, 9, 10);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>7dc1cfec-1c25-4799-9c3e-2e2ff0b50f99</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>ESSFirms</Name>
+        <DisplayName>ESSFirms</DisplayName>
+        <Value>6</Value>
+        <DefaultValue>6</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>4</Start>
+        <Stop>20</Stop>
+        <Step>1</Step>
+        <Decoration />
+        <ExposeAsSlider>false</ExposeAsSlider>
+        <IndicatorParameterDisplayNames />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>ESS</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>Pane</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>ESSSeries</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause />
+  </Rule>
+  <Rule>
+    <Name>ESS Firms is below a Value</Name>
+    <Description>Number of Firms in Equity Summary Score is below a Value.</Description>
+    <Category>Equity Summary Score</Category>
+    <Init>DataSeries &lt;#ESSSeries&gt; = FundamentalDataSeries(Bars.Symbol, "equity summary score");
+&lt;#ESSSeries&gt;.Description = "ESS";
+Bars.Cache["ESS"] = &lt;#ESSSeries&gt;;</Init>
+    <Body>FundamentalItem &lt;#ESS&gt; = GetFundamentalItem(bar, Bars.Symbol, "equity summary score");
+if (&lt;#ESS&gt; != null &amp;&amp; Int32.Parse(&lt;#ESS&gt;.GetDetail("firms")) &lt; &lt;#ESSFirms&gt;)
+</Body>
+    <Plotting>//PlotToken=ESS
+ChartPane &lt;#Pane&gt; = &lt;#NewPane&gt;;
+SetPaneMinMax(&lt;#Pane&gt;, 0, 10);
+PlotSeries(&lt;#Pane&gt;, &lt;#ESSSeries&gt;, Color.Black, LineStyle.Solid, 2);
+Color red = Color.FromArgb(64, 204, 0, 0);
+Color orange = Color.FromArgb(64, 126, 33, 33);
+Color grey = Color.FromArgb(64, 153, 153, 153);
+Color yellow = Color.FromArgb(64, 58, 124, 0);
+Color green = Color.FromArgb(64, 153, 170, 0);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, red, LineStyle.Solid, 1, 0, 1);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, orange, LineStyle.Solid, 1, 1, 3);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, grey, LineStyle.Solid, 1, 3, 7);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, yellow, LineStyle.Solid, 1, 7, 9);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, green, LineStyle.Solid, 1, 9, 10);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>7dc1cfec-1c25-4799-9c3e-2e2ff0b50f99</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>ESSFirms</Name>
+        <DisplayName>ESSFirms</DisplayName>
+        <Value>6</Value>
+        <DefaultValue>6</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>4</Start>
+        <Stop>20</Stop>
+        <Step>1</Step>
+        <Decoration />
+        <ExposeAsSlider>false</ExposeAsSlider>
+        <IndicatorParameterDisplayNames />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>ESS</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>Pane</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>ESSSeries</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause />
+  </Rule>
+  <Rule>
+    <Name>ESS of Another Symbol  is above a Value</Name>
+    <Description>Equity Summary Score of another Symbol is above a Value.</Description>
+    <Category>Equity Summary Score</Category>
+    <Init>DataSeries &lt;#ESSSeries&gt; = FundamentalDataSeries(Bars.Symbol, &lt;#Symbol&gt;, "equity summary score");
+&lt;#ESSSeries&gt;.Description = "ESS(&lt;!Symbol&gt;)";
+Bars.Cache["ESS&lt;!Symbol&gt;"] = &lt;#ESSSeries&gt;;
+</Init>
+    <Body>if (&lt;#ESSSeries&gt;[bar] &gt; &lt;#ESSValue&gt;)
+</Body>
+    <Plotting>//PlotToken=ESS
+ChartPane &lt;#Pane&gt; = &lt;#NewPane&gt;;
+SetPaneMinMax(&lt;#Pane&gt;, 0, 10);
+PlotSeries(&lt;#Pane&gt;, &lt;#ESSSeries&gt;, Color.Black, LineStyle.Solid, 2);
+Color red = Color.FromArgb(64, 204, 0, 0);
+Color orange = Color.FromArgb(64, 126, 33, 33);
+Color grey = Color.FromArgb(64, 153, 153, 153);
+Color yellow = Color.FromArgb(64, 58, 124, 0);
+Color green = Color.FromArgb(64, 153, 170, 0);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, red, LineStyle.Solid, 1, 0, 1);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, orange, LineStyle.Solid, 1, 1, 3);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, grey, LineStyle.Solid, 1, 3, 7);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, yellow, LineStyle.Solid, 1, 7, 9);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, green, LineStyle.Solid, 1, 9, 10);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>7dc1cfec-1c25-4799-9c3e-2e2ff0b50f99</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>ESSValue</Name>
+        <DisplayName>ESSValue</DisplayName>
+        <Value>3</Value>
+        <DefaultValue>3</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+        <ExposeAsSlider>false</ExposeAsSlider>
+        <IndicatorParameterDisplayNames />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Symbol</Name>
+        <DisplayName>Symbol</DisplayName>
+        <Value>SPY</Value>
+        <DefaultValue>XXXX</DefaultValue>
+        <ParamType>String</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+        <ExposeAsSlider>false</ExposeAsSlider>
+        <IndicatorParameterDisplayNames />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>ESSSeries</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>Pane</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause />
+  </Rule>
+  <Rule>
+    <Name>ESS of Another Symbol  is below a Value</Name>
+    <Description>Equity Summary Score of another Symbol is below a Value.</Description>
+    <Category>Equity Summary Score</Category>
+    <Init>DataSeries &lt;#ESSSeries&gt; = FundamentalDataSeries(Bars.Symbol, &lt;#Symbol&gt;, "equity summary score");
+&lt;#ESSSeries&gt;.Description = "ESS(&lt;!Symbol&gt;)";
+Bars.Cache["ESS&lt;!Symbol&gt;"] = &lt;#ESSSeries&gt;;
+</Init>
+    <Body>if (&lt;#ESSSeries&gt;[bar] &lt; &lt;#ESSValue&gt;)
+</Body>
+    <Plotting>//PlotToken=ESS
+ChartPane &lt;#Pane&gt; = &lt;#NewPane&gt;;
+SetPaneMinMax(&lt;#Pane&gt;, 0, 10);
+PlotSeries(&lt;#Pane&gt;, &lt;#ESSSeries&gt;, Color.Black, LineStyle.Solid, 2);
+Color red = Color.FromArgb(64, 204, 0, 0);
+Color orange = Color.FromArgb(64, 126, 33, 33);
+Color grey = Color.FromArgb(64, 153, 153, 153);
+Color yellow = Color.FromArgb(64, 58, 124, 0);
+Color green = Color.FromArgb(64, 153, 170, 0);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, red, LineStyle.Solid, 1, 0, 1);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, orange, LineStyle.Solid, 1, 1, 3);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, grey, LineStyle.Solid, 1, 3, 7);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, yellow, LineStyle.Solid, 1, 7, 9);
+DrawHorizontalBand(&lt;#Pane&gt;, Color.Gray, green, LineStyle.Solid, 1, 9, 10);
+</Plotting>
+    <RuleType>Condition</RuleType>
+    <ID>7dc1cfec-1c25-4799-9c3e-2e2ff0b50f99</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>ESSValue</Name>
+        <DisplayName>ESSValue</DisplayName>
+        <Value>3</Value>
+        <DefaultValue>3</DefaultValue>
+        <ParamType>Float</ParamType>
+        <Start>1</Start>
+        <Stop>10</Stop>
+        <Step>1</Step>
+        <Decoration />
+        <ExposeAsSlider>false</ExposeAsSlider>
+        <IndicatorParameterDisplayNames />
+      </RuleParameter>
+      <RuleParameter>
+        <Name>Symbol</Name>
+        <DisplayName>Symbol</DisplayName>
+        <Value>SPY</Value>
+        <DefaultValue>XXXX</DefaultValue>
+        <ParamType>String</ParamType>
+        <Start>0</Start>
+        <Stop>0</Stop>
+        <Step>0</Step>
+        <Decoration />
+        <ExposeAsSlider>false</ExposeAsSlider>
+        <IndicatorParameterDisplayNames />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>ESSSeries</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>Pane</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause />
+  </Rule>
+</ArrayOfRule>

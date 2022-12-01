@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfRule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Rule>
+    <Name>Last Insider Buy Transaction was not within N Days</Name>
+    <Description>Occurs greater than N days after the Insider Buy Transaction.</Description>
+    <Category>Calendar Fundamentals</Category>
+    <Init>FundamentalDateRules &lt;#fdr&gt; = new FundamentalDateRules(this, Bars, Bars.Symbol, "insider buy");
+int &lt;#fiDays&gt;;
+</Init>
+    <Body>if(( &lt;#fdr&gt;.DaysSinceFundamentalItem( bar, out &lt;#fiDays&gt; ))&amp;&amp;( &lt;#fiDays&gt; &gt; &lt;#Days&gt; ))
+</Body>
+    <Plotting />
+    <RuleType>Condition</RuleType>
+    <ID>0e82602a-c739-487b-af15-3b99eb85a6e8</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Days</Name>
+        <Value>5</Value>
+        <DefaultValue>5</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>fiDays</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>fdr</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Last Insider Sell Transaction was not within N Days</Name>
+    <Description>Occurs greater than N days after the Insider Sell Transaction.</Description>
+    <Category>Calendar Fundamentals</Category>
+    <Init>FundamentalDateRules &lt;#fdr&gt; = new FundamentalDateRules(this, Bars, Bars.Symbol, "insider sell");
+int &lt;#fiDays&gt;;
+</Init>
+    <Body>if(( &lt;#fdr&gt;.DaysSinceFundamentalItem( bar, out &lt;#fiDays&gt; ))&amp;&amp;( &lt;#fiDays&gt; &gt; &lt;#Days&gt; ))
+</Body>
+    <Plotting />
+    <RuleType>Condition</RuleType>
+    <ID>0e82602a-c739-487b-af15-3b99eb85a6e8</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Days</Name>
+        <Value>5</Value>
+        <DefaultValue>5</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>fiDays</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>fdr</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Last Insider Buy Transaction was within N Days</Name>
+    <Description>Occurs less than or equal to N days after the Insider Buy Transaction.</Description>
+    <Category>Calendar Fundamentals</Category>
+    <Init>FundamentalDateRules &lt;#fdr&gt; = new FundamentalDateRules(this, Bars, Bars.Symbol, "insider buy");
+int &lt;#fiDays&gt;;
+</Init>
+    <Body>if(( &lt;#fdr&gt;.DaysSinceFundamentalItem( bar, out &lt;#fiDays&gt; ))&amp;&amp;( &lt;#fiDays&gt; &lt;= &lt;#Days&gt; ))
+</Body>
+    <Plotting />
+    <RuleType>Condition</RuleType>
+    <ID>0e82602a-c739-487b-af15-3b99eb85a6e8</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Days</Name>
+        <Value>5</Value>
+        <DefaultValue>5</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>fiDays</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>fdr</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+  <Rule>
+    <Name>Last Insider Sell Transaction was within N Days</Name>
+    <Description>Occurs less than or equal to N days after the Insider Sell Transaction.</Description>
+    <Category>Calendar Fundamentals</Category>
+    <Init>FundamentalDateRules &lt;#fdr&gt; = new FundamentalDateRules(this, Bars, Bars.Symbol, "insider sell");
+int &lt;#fiDays&gt;;
+</Init>
+    <Body>if(( &lt;#fdr&gt;.DaysSinceFundamentalItem( bar, out &lt;#fiDays&gt; ))&amp;&amp;( &lt;#fiDays&gt; &lt;= &lt;#Days&gt; ))
+</Body>
+    <Plotting />
+    <RuleType>Condition</RuleType>
+    <ID>0e82602a-c739-487b-af15-3b99eb85a6e8</ID>
+    <Parameters>
+      <RuleParameter>
+        <Name>Days</Name>
+        <Value>5</Value>
+        <DefaultValue>5</DefaultValue>
+        <ParamType>Integer</ParamType>
+        <Start>1</Start>
+        <Stop>200</Stop>
+        <Step>1</Step>
+        <Decoration />
+      </RuleParameter>
+    </Parameters>
+    <Variables>
+      <RuleVariable>
+        <Name>fiDays</Name>
+      </RuleVariable>
+      <RuleVariable>
+        <Name>fdr</Name>
+      </RuleVariable>
+    </Variables>
+    <UsingClause>WealthLab.Rules;</UsingClause>
+  </Rule>
+</ArrayOfRule>

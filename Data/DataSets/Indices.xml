@@ -1,0 +1,8 @@
+﻿<?xml version="1.0"?>
+<DataSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Indices</Name>
+  <Scale>Daily</Scale>
+  <BarInterval>0</BarInterval>
+  <DSString>.DJI,.IXIC,.NYA,.SPX,.XAX,.OEX,.MID,</DSString>
+  <ProviderName>FidelityStaticProvider</ProviderName>
+</DataSet>
